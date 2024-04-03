@@ -62,7 +62,7 @@ namespace AnalyzorBlazor.Services
                 else
                 {
                     _db.Device.Remove(obj);
-                    //_db.SaveChanges();
+                    _db.SaveChanges();
                     responses.Success = true;
                     responses.Message = $"Device/Delete/{id} was deleted";
                 }                
@@ -75,7 +75,20 @@ namespace AnalyzorBlazor.Services
         }
         public async Task<Responses<int>> Create(Device device)
         {
-            throw new NotImplementedException();
+            Responses<int> responses = new();
+            try
+            {
+                device.CreateT = DateTime.Now;
+                _db.Device.Add(device);
+                _db.SaveChanges();
+                responses.Success = true;
+
+            } catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"/Tester/create/ Exception {ex}";
+            }
+            return responses;
         }
 
         public async Task<Responses<int>> Edit(int id, Device device)
