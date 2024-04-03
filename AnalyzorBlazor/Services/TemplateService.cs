@@ -9,33 +9,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnalyzorBlazor.Services
 {
-    public class DeviceService : IDeviceService
+    public class TemplateService : ITemplateService
     {
         private readonly ApplicationDbContext _db;
-        public DeviceService(ApplicationDbContext db)
+        public TemplateService(ApplicationDbContext db)
         {
             _db = db;
         }
-        public async Task<List<Device>> Get()
-        {
-            List<Device> objList = _db.Device.ToList();
+        public async Task<List<Template>> Get()
+        {            
+            List<Template> objList = _db.Template.ToList();
             return objList;
         }
-        public async Task<Responses<Device>> Get(int id)
+        public async Task<Responses<Template>> Get(int id)
         {
-            Responses<Device> responses = new ();
+            Responses<Template> responses = new ();
             if (id == null || id == 0)
             {
                 responses.Success = false;
-                responses.Message = $"Device/Details/{id} = 0";
+                responses.Message = $"Template/Details/{id} = 0";
             }
             try
             {
-                var obj = await _db.Device.FindAsync(id);                
+                var obj = await _db.Template.FindAsync(id);                
                 if (obj == null)
                 {
                     responses.Success = false;
-                    responses.Message = $"Device/Details/{id} Not found";
+                    responses.Message = $"Template/Details/{id} Not found";
                 } else
                 {
                     responses.Data = obj;
@@ -44,7 +44,7 @@ namespace AnalyzorBlazor.Services
             } catch (Exception ex)
             {
                 responses.Success = false;
-                responses.Message = $"Device/Details/{id} Exception {ex.Message}";
+                responses.Message = $"Template/Details/{id} Exception {ex.Message}";
             }
             return responses;
         }
@@ -53,41 +53,41 @@ namespace AnalyzorBlazor.Services
             Responses<int> responses = new();
             try
             {
-                var obj = await _db.Device.FindAsync(id);
+                var obj = await _db.Template.FindAsync(id);
                 if (obj == null)
                 {
                     responses.Success = false;                    
-                    responses.Message = $"Device/Delete/{id} Not found";                    
+                    responses.Message = $"Template/Delete/{id} Not found";                    
                 }
                 else
                 {
-                    _db.Device.Remove(obj);
+                    _db.Template.Remove(obj);
                     //_db.SaveChanges();
                     responses.Success = true;
-                    responses.Message = $"Device/Delete/{id} was deleted";
+                    responses.Message = $"Template/Delete/{id} was deleted";
                 }                
             } catch (Exception ex)
             {
                 responses.Success = false;
-                responses.Message = $"Device/Delete/{id} Exception {ex.Message}";
+                responses.Message = $"Template/Delete/{id} Exception {ex.Message}";
             }
             return responses;
         }
-        public async Task<Responses<int>> Create(Device device)
+        public async Task<Responses<int>> Create(Template device)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Responses<int>> Edit(int id, Device device)
+        public async Task<Responses<int>> Edit(int id, Template device)
         {
             throw new NotImplementedException();
         }
-        public async Task<Responses<Device>> GetForUpdate(int id)
+        public async Task<Responses<Template>> GetForUpdate(int id)
         {
-            Responses<Device> responses = new();
+            Responses<Template> responses = new();
             try
             {
-                var data = await _db.Device.FindAsync(id);
+                var data = await _db.Template.FindAsync(id);
 
                 responses.Data = data;// mapper.Map<AuthorUpdateDto>(data),
                 responses.Success = true;

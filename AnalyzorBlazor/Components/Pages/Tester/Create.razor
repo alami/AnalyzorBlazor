@@ -1,11 +1,117 @@
 ﻿@page "/tester/create"
 @inject IDeviceService deviceService
+@inject ITemplateService templateService
 @inject IJSRuntime js
 @inject NavigationManager navManager
 @rendermode InteractiveServer
 
-<h3>Create</h3>
+<h3>Create Device</h3>
+<EditForm Model="Device" OnValidSubmit="HandleDeviceCreate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Name">Name</label>
+        </div>
+        <div class="col-8">
+            <InputText @bind-Value="Device.Name" class="form-control" />
+            <ValidationMessage For="@(() => Device.Name)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Template">Template</label>
+        </div>
+        <div class="col-8">
+            <InputSelect @bind-Value="Device.Template" class="form-select" id="author">
+                <option value="">-- Select Template --</option>
+                @foreach (var t in Templates)
+                {
+                    <option value="@t.Name">@t.Name</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Device.Template)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="TotalCount">Qty Laptops</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.TotalCount" class="form-control" />
+            <ValidationMessage For="@(() => Device.TotalCount)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label>Tester Time</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.TesterTime" class="form-control" />
+            <ValidationMessage For="@(() => Device.TesterTime)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label>SN</label>
+        </div>
+        <div class="col-8">
+            <InputText @bind-Value="Device.SN" class="form-control" />
+            <ValidationMessage For="@(() => Device.SN)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label>Model</label>
+        </div>
+        <div class="col-8">
+            <InputText @bind-Value="Device.Model" class="form-control" />
+            <ValidationMessage For="@(() => Device.Model)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label>Comments</label>
+        </div>
+        <div class="col-8">
+            <InputTextArea @bind-Value="Device.Comments" class="form-control"></InputTextArea>
+            <ValidationMessage For="@(() => Device.Comments)" />
+        </div>
+    </div>
+    <br />
 
+    <button class="btn btn-primary" type="submit">
+        <span class="oi oi-pencil"></span>
+        Update Device
+    </button>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
+
+</EditForm>
 @code {
+    [Parameter]
+    public int id { get; set; }
+    private Device Device = new();
+    private List<Template> Templates = new();
+    protected override async Task OnInitializedAsync()
+    {
+        Templates = await templateService.Get();        
+    }
 
+    private async Task HandleDeviceCreate()
+    {
+        BackToList();
+        var response = await deviceService.Create(Device);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+
+    private void BackToList()
+    {
+        navManager.NavigateTo("/tester/");
+    }
 }

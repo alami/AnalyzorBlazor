@@ -25,6 +25,7 @@ namespace AnalyzorBlazor.Models
         public int Id { get; set; }
 
         [Display(Name = "Device Name")]
+        [Required]
         public string Name { get; set; }
         [Display(Name = "S/N")]
         public string? SN { get; set; }        
