@@ -1,0 +1,131 @@
+﻿@page "/tester/"
+@inject IDeviceService deviceService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+
+
+
+<PageTitle>All Devices</PageTitle>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Devices List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create New Device By Tester
+            </a>
+        </div>
+    </div>
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%; font-size: smaller">
+            <thead>
+                <tr>
+                    <th>Device Name</th>
+                    <th>Qty laptops</th>
+                    <th>Template Name</th>
+                    <th>Tester Time</th>
+                    <th>Serial Number</th>
+                    <th>Model</th>
+                    <th>Comments</th>
+                    <th>Creation Date by Tester</th>
+                    <th>Edit & Delete</th>
+                    <th>Stage action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td width=7%>
+                            @obj.Name
+                            <div style="font-size:small"> &nbsp; @obj.Id:@obj.Stage</div>
+                        </td>
+                        <td width=7%>@obj.TotalCount</td>
+                        <td width=7%>@obj.Template</td>
+                        <td width=7%>@obj.TesterTime</td>
+                        <td width=7%>@obj.SN</td>
+                        <td width=7%>@obj.Model</td>
+                        <td width=7%>@obj.Comments</td>
+                        <td width=7%>@obj.CreateT</td>
+                        <td>
+                            <div class="w075 btn-group" role="group">
+                                <a asp-controller="Device" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-warning mx-2">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button @onclick=@(()=>Delete(obj.Id)) class="btn btn-danger mx-2">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="w075 btn-group" role="group">
+                                @if (obj.Stage == null)
+                                {
+                                    <a asp-controller="STester" asp-action="Create" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
+                                        <i class="fa-solid fa-user-tie"></i> Select Accessories
+                                    </a>
+                                }
+                                
+                                @if (obj.Stage == Stages.Init)
+                                {
+                                    <a asp-controller="SInit" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-1 disabled">
+                                        <i class="fa-solid fa-user-tie"></i>Tester
+                                    </a>
+                                }
+                                @if (obj.Stage == Stages.Tester)
+                                {
+                                    <a asp-controller="STester" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-info mx-1 disabled">
+                                        <i class="fa-solid fa-user-tie"></i> Analyser
+                                    </a>
+                                }
+                                @if (obj.Stage == Stages.Analyser)
+                                {
+                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-warning mx-1 disabled">
+                                        <i class="fa-solid fa-user-tie"></i> Calculate
+                                    </a>
+                                }
+                                @if (obj.Stage == Stages.Calculate)
+                                {
+                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-info mx-1 disabled">
+                                        <i class="fa-solid fa-user-tie"></i> Analyser
+                                    </a>
+                                }
+                                @if (obj.Stage == Stages.Result)
+                                {
+                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
+                                        <i class="fa-solid fa-user-tie"></i> Edit Result
+                                    </a>
+                                }
+
+                            </div>
+                        </td>
+                    </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
+@code {
+    private List<Device> Model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await deviceService.Get();
+    }
+    private async Task Delete(int deviceId)
+    {
+        var device = Model.First(q => q.Id == deviceId);
+        var conform = await js.InvokeAsync<bool>("confirm", $"Are You Sure Want to Delete {device.Name}?");
+        if (conform)
+        {
+            var responses = await deviceService.Delete(deviceId);
+            if (responses.Success)
+            {
+                await OnInitializedAsync();
+            }
+        }
+    }
+}

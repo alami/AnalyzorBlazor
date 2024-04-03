@@ -5,11 +5,6 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnalyzorBlazor", "AnalyzorBlazor\AnalyzorBlazor.csproj", "{0B970E2E-2818-4EDC-9E52-BC705F8CBCDE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ls", "ls", "{08E75F94-0F46-4CD4-9AD2-6BF17D5F1203}"
-	ProjectSection(SolutionItems) = preProject
-		ln.txt = ln.txt
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
