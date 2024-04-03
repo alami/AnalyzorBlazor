@@ -3,6 +3,7 @@ using AnalyzerBlasor.Data;
 using AnalyzorBlazor.Models;
 using Azure;
 using AnalyzerBlasor.Services.Base;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace AnalyzorBlazor.Services
@@ -18,6 +19,33 @@ namespace AnalyzorBlazor.Services
         {
             List<Device> objList = _db.Device.ToList();
             return objList;
+        }
+        public async Task<Responses<Device>> Get(int id)
+        {
+            Responses<Device> responses = new ();
+            if (id == null || id == 0)
+            {
+                responses.Success = false;
+                responses.Message = $"Device/Details/{id} = 0";
+            }
+            try
+            {
+                var obj = await _db.Device.FindAsync(id);                
+                if (obj == null)
+                {
+                    responses.Success = false;
+                    responses.Message = $"Device/Details/{id} Not found";
+                } else
+                {
+                    responses.Data = obj;
+                    responses.Success = true;
+                };
+            } catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"Device/Details/{id} Exception {ex.Message}";
+            }
+            return responses;
         }
         public async Task<Responses<int>> Delete(int id)
         {
@@ -40,7 +68,7 @@ namespace AnalyzorBlazor.Services
             } catch (Exception ex)
             {
                 responses.Success = false;
-                responses.Message = $"Device/Delete/{id} Exception";
+                responses.Message = $"Device/Delete/{id} Exception {ex.Message}";
             }
             return responses;
         }
@@ -53,13 +81,6 @@ namespace AnalyzorBlazor.Services
         {
             throw new NotImplementedException();
         }
-
-
-        public Task<Responses<Device>> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<Responses<Device>> GetForUpdate(int id)
         {
             throw new NotImplementedException();

@@ -1,0 +1,13 @@
+﻿@page "/tester/update/{id:int}"
+@inject IDeviceService deviceService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+
+<h3>Update</h3>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+}

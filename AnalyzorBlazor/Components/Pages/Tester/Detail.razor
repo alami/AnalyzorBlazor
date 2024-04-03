@@ -1,0 +1,98 @@
+﻿@page "/tester/detail/{id:int}"
+@inject IDeviceService deviceService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+
+<h3>Device Details </h3>
+<EditForm Model="Device">
+    <fieldset disabled="true">
+        <div class="form-group row p-1">
+            <div class="col-4">
+                <label>Name</label>
+            </div>
+            <div class="col-8">
+                <InputText @bind-Value="Device.Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="form-group row p-1">
+            <div class="col-4">
+                <label>Total Count</label>
+            </div>
+            <div class="col-8">
+                <InputNumber @bind-Value="Device.TotalCount" class="form-control" />
+                <span asp-validation-for="TotalCount" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row p-1">
+            <div class="col-4">
+                <label>Tester Time</label>
+            </div>
+            <div class="col-8">
+                <InputNumber @bind-Value="Device.TesterTime" class="form-control" />
+                <span asp-validation-for="TesterTime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row p-1">
+            <div class="col-4">
+                <label>SN</label>
+            </div>
+            <div class="col-8">
+                <InputText @bind-Value="Device.SN" class="form-control" />
+                <span asp-validation-for="SN" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row p-1">
+            <div class="col-4">
+                <label>Model</label>
+            </div>
+            <div class="col-8">
+                <InputText @bind-Value="Device.Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row p-1">
+            <div class="col-4">
+                <label>Comments</label>
+            </div>
+            <div class="col-8">
+                <InputTextArea @bind-Value="Device.Comments" class="form-control"></InputTextArea>
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+        </div>
+    </fieldset>
+    <br />
+    <button @onclick="GoToEdit" class="btn btn-warning">
+        <span class="oi oi-pencil"></span>
+        Edit Device
+    </button>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Device Device = new Device();
+    protected async override Task OnInitializedAsync()
+    {
+        var responses = await deviceService.Get(id);
+        if (responses.Success)
+        {
+            Device = responses.Data;
+        }
+    }
+    private void GoToEdit()
+    {
+        navManager.NavigateTo($"/tester/update/{Device.Id}");
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/tester/");
+    }
+
+}
