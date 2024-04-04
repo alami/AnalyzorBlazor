@@ -93,7 +93,21 @@ namespace AnalyzorBlazor.Services
 
         public async Task<Responses<int>> Edit(int id, Device device)
         {
-            throw new NotImplementedException();
+            Responses<int> responses = new();
+            try
+            {
+                device.UpdateT = DateTime.Now;
+                _db.Device.Update(device);
+                _db.SaveChanges();
+                responses.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"/Tester/edit/{id} Exception {ex}";
+            }
+            return responses;
         }
         public async Task<Responses<Device>> GetForUpdate(int id)
         {
