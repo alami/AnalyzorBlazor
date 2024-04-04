@@ -1,0 +1,158 @@
+﻿@page "/template"
+@inject ITemplateService templateService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+<PageTitle>All Templates</PageTitle>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Templates List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a href="/template/create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create New Template by Administrator
+            </a>
+        </div>
+    </div>
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%; font-size: smaller">
+            <thead>
+                <tr>
+                    <th rowspan="2">Template Name</th>
+                    <th rowspan="2">Comment</th>
+                    <th rowspan="2">% Lost</th>
+                    <th rowspan="2">% Result</th>
+                    <th rowspan="2">Shipping price</th>
+                    <th colspan="2">Tester </th>                    
+                    <th colspan="2">Receiver</th>
+                    <th colspan="2">Lister</th>
+                    <th colspan="2">Fullfilment</th>
+                    <th rowspan="2">Market fees</th>
+                    <th colspan="2">Dissassembly</th>
+                    <th rowspan="2">Pos</th>
+                    <th rowspan="2">Actions</th>
+                </tr>
+                <tr>                    
+                    <th>Time</th>
+                    <th>Time Price</th>
+                    <th>Time</th>
+                    <th>Time Price</th>
+                    <th>Time</th>
+                    <th>Time Price</th>
+                    <th>Time</th>
+                    <th>Time Price</th>
+                    <th>Time</th>
+                    <th>Time Price</th>
+                    @*<th>Visible</th>*@
+                    @*<th>Stage</th>*@
+                    @*<th>DeviceId</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td width=7%>@obj.Name</td>
+                        <td width=7%>@obj.Comment</td>
+                        <td width=7%>@obj.PersntLost</td>
+                        <td width=7%>@obj.PersntResult</td>
+                        <td width=7%>@obj.Shipping_price</td>
+                        <td width=7%>@obj.Tester_time</td>
+                        <td width=7%>@obj.Tester_time_price</td>
+                        <td width=7%>@obj.Receiver_time</td>
+                        <td width=7%>@obj.Receiver_time_price</td>
+                        <td width=7%>@obj.Lister_time</td>
+                        <td width=7%>@obj.Lister_time_price</td>
+                        <td width=7%>@obj.Fullfilment_time</td>
+                        <td width=7%>@obj.Fullfilment_time_price</td>
+                        <td width=7%>@obj.Market_fees</td>
+                        <td width=7%>@obj.Dissassembly_time</td>
+                        <td width=7%>@obj.Disasembler_time_price</td>
+                        <td width=7%>@obj.Pos</td>
+                        @*<td width=7%>@obj.Visible</td>*@
+                        @* <td width=0%>@obj.Stage</td>
+        <td width=7%>@obj.DeviceId</td> *@
+                        <td>
+                            <div class="w075 btn-group" role="group">
+                                <a href="/template/detail/@obj.Id" class="btn btn-warning mx-2">
+                                    <i class="fas fa-database"></i>
+                                </a>
+                                <a href="/template/update/@obj.Id" class="btn btn-warning mx-2">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button @onclick=@(()=>Delete(obj.Id)) class="btn btn-danger mx-2">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="w075 btn-group" role="group">
+                                @if (obj.Stage == null)
+                                {
+                                    <a asp-controller="STester" asp-action="Create" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
+                                        <i class="fa-solid fa-user-tie"></i> Select Accessories
+                                    </a>
+                                }
+
+                                @if (obj.Stage == Stages.Init)
+                                {
+                                    <a asp-controller="SInit" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-1 disabled">
+                                        <i class="fa-solid fa-user-tie"></i>Tester
+                                    </a>
+                                }
+                                @if (obj.Stage == Stages.Tester)
+                                {
+                                    <a asp-controller="STester" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-info mx-1 disabled">
+                                        <i class="fa-solid fa-user-tie"></i> Analyser
+                                    </a>
+                                }
+                                @if (obj.Stage == Stages.Analyser)
+                                {
+                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-warning mx-1 disabled">
+                                        <i class="fa-solid fa-user-tie"></i> Calculate
+                                    </a>
+                                }
+                                @if (obj.Stage == Stages.Calculate)
+                                {
+                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-info mx-1 disabled">
+                                        <i class="fa-solid fa-user-tie"></i> Analyser
+                                    </a>
+                                }
+                                @if (obj.Stage == Stages.Result)
+                                {
+                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
+                                        <i class="fa-solid fa-user-tie"></i> Edit Result
+                                    </a>
+                                }
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    private List<Template> Model;
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await templateService.Get();
+    }
+    private async Task Delete(int deviceId)
+    {
+        var template = Model.First(q => q.Id == deviceId);
+        var conform = await js.InvokeAsync<bool>("confirm", $"Are You Sure Want to Delete {template.Name}?");
+        if (conform)
+        {
+            var responses = await templateService.Delete(deviceId);
+            if (responses.Success)
+            {
+                await OnInitializedAsync();
+            }
+        }
+    }
+}

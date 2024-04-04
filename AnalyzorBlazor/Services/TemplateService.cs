@@ -73,9 +73,22 @@ namespace AnalyzorBlazor.Services
             }
             return responses;
         }
-        public async Task<Responses<int>> Create(Template device)
+        public async Task<Responses<int>> Create(Template template)
         {
-            throw new NotImplementedException();
+            Responses<int> responses = new();
+            try
+            {                
+                _db.Template.Add(template);
+                _db.SaveChanges();
+                responses.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"/template/create/ Exception {ex}";
+            }
+            return responses;
         }
 
         public async Task<Responses<int>> Edit(int id, Template device)

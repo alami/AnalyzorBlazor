@@ -8,6 +8,9 @@ namespace AnalyzorBlazor.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Display(Name = "Template Name")]
+        [Required]
         public string Name { get; set; }
         public string? Comment { get; set; }
 
