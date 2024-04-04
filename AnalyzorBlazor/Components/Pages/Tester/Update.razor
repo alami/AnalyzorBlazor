@@ -89,7 +89,6 @@
         }
         private async Task HandleDeviceUpdate()
         {
-            BackToList();
             var response = await deviceService.Edit(id, Device);
             if (response.Success)
             {

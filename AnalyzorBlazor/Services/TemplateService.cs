@@ -62,7 +62,7 @@ namespace AnalyzorBlazor.Services
                 else
                 {
                     _db.Template.Remove(obj);
-                    //_db.SaveChanges();
+                    _db.SaveChanges();
                     responses.Success = true;
                     responses.Message = $"Template/Delete/{id} was deleted";
                 }                
@@ -91,9 +91,22 @@ namespace AnalyzorBlazor.Services
             return responses;
         }
 
-        public async Task<Responses<int>> Edit(int id, Template device)
+        public async Task<Responses<int>> Edit(int id, Template template)
         {
-            throw new NotImplementedException();
+            Responses<int> responses = new();
+            try
+            {
+                _db.Template.Update(template);
+                _db.SaveChanges();
+                responses.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"/template/edit/{id} Exception {ex}";
+            }
+            return responses;
         }
         public async Task<Responses<Template>> GetForUpdate(int id)
         {
