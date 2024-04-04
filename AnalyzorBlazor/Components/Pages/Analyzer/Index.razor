@@ -65,16 +65,16 @@
                             <div class="w075 btn-group" role="group">
                                 @if (obj.Stage == null)
                                 {
-                                    <a asp-controller="STester" asp-action="Create" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
-                                        <i class="fa-solid fa-user-tie"></i> Select Accessories
-                                    </a>
+                                    <button @onclick=@(()=>Parts(obj.Id)) class="btn btn-info mx-2">
+                                        <i class="fa-solid fa-user-tie"></i> Parts
+                                    </button>
                                 }
                                 @*@if (obj.Stage == null)
-                                    {
-                                        <a asp-controller="SInit" asp-action="Create" asp-route-Id="@obj.Id" class="btn btn-success disabled">
-                                            <i class="fa-solid fa-user-tie"></i> Tester
-                                        </a>
-                                    }*@
+        {
+            <a asp-controller="SInit" asp-action="Create" asp-route-Id="@obj.Id" class="btn btn-success disabled">
+                <i class="fa-solid fa-user-tie"></i> Tester
+            </a>
+        }*@
                                 @if (obj.Stage == Stages.Init)
                                 {
                                     <a asp-controller="SInit" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-1 disabled">
@@ -89,9 +89,9 @@
                                 }
                                 @if (obj.Stage == Stages.Analyser)
                                 {
-                                    <a asp-action="Calculate" asp-route-Id="@obj.Id" class="btn btn-warning mx-1">
+                                    <button @onclick=@(()=>Calculate(obj.Id)) class="btn btn-warning mx-2">
                                         <i class="fa-solid fa-user-tie"></i> Calculate
-                                    </a>
+                                    </button>
                                 }
                                 @if (obj.Stage == Stages.Calculate)
                                 {
@@ -125,5 +125,13 @@
     protected override async Task OnInitializedAsync()
     {
         Model = await deviceService.Get();
+    }
+    private async Task Parts(int deviceId)
+    {
+        navManager.NavigateTo($"/analyzer/parts/{deviceId}");
+    }
+    private async Task Calculate(int deviceId)
+    {
+        navManager.NavigateTo($"/analyzer/calculate/{deviceId}");
     }
 }

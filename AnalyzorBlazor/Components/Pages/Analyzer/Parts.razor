@@ -1,10 +1,10 @@
-﻿@page "/analyzer/calculate/{id:int}"
+﻿@page "/analyzer/parts/{id:int}"
 @inject IDeviceService deviceService
 @inject IJSRuntime js
 @inject NavigationManager navManager
 @rendermode InteractiveServer
 
-<h3>Calculate</h3>
+    <h3>Device Parts</h3>
 
 @code {
     [Parameter]
@@ -31,4 +31,5 @@
     {
         navManager.NavigateTo("/analyzer/");
     }
+
 }

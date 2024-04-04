@@ -67,11 +67,11 @@
                             <div class="w075 btn-group" role="group">
                                 @if (obj.Stage == null)
                                 {
-                                    <a asp-controller="STester" asp-action="Create" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
-                                        <i class="fa-solid fa-user-tie"></i> Select Accessories
-                                    </a>
+                                    <button @onclick=@(()=>Accessories(obj.Id)) class="btn btn-success mx-2">
+                                        <i class="fa-solid fa-user-tie"></i> Accessories
+                                    </button>
                                 }
-                                
+
                                 @if (obj.Stage == Stages.Init)
                                 {
                                     <a asp-controller="SInit" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-1 disabled">
@@ -84,7 +84,7 @@
                                         <i class="fa-solid fa-user-tie"></i> Analyser
                                     </a>
                                 }
-                                @if (obj.Stage == Stages.Analyser)
+                                @*@if (obj.Stage == Stages.Analyser)
                                 {
                                     <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-warning mx-1 disabled">
                                         <i class="fa-solid fa-user-tie"></i> Calculate
@@ -101,7 +101,7 @@
                                     <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
                                         <i class="fa-solid fa-user-tie"></i> Edit Result
                                     </a>
-                                }
+                                }*@
 
                             </div>
                         </td>
@@ -130,5 +130,9 @@
                 await OnInitializedAsync();
             }
         }
+    }
+    private async Task Accessories(int deviceId)
+    {
+        navManager.NavigateTo($"/tester/accessories/{deviceId}");
     }
 }

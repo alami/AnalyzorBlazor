@@ -75,29 +75,29 @@
     </button>
 
 </EditForm>
-    @code {
-        [Parameter]
-        public int id { get; set; }
-        private Device Device = new ();
-        protected async override Task OnInitializedAsync()
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Device Device = new ();
+    protected async override Task OnInitializedAsync()
+    {
+        var deviceResponse = await deviceService.GetForUpdate(id);
+        if (deviceResponse.Success)
         {
-            var deviceResponse = await deviceService.GetForUpdate(id);
-            if (deviceResponse.Success)
-            {
-                Device = deviceResponse.Data;
-            }
-        }
-        private async Task HandleDeviceUpdate()
-        {
-            var response = await deviceService.Edit(id, Device);
-            if (response.Success)
-            {
-                BackToList();
-            }
-        }
-
-        private void BackToList()
-        {
-            navManager.NavigateTo("/tester/");
+            Device = deviceResponse.Data;
         }
     }
+    private async Task HandleDeviceUpdate()
+    {
+        var response = await deviceService.Edit(id, Device);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+
+    private void BackToList()
+    {
+        navManager.NavigateTo("/tester/");
+    }
+}
