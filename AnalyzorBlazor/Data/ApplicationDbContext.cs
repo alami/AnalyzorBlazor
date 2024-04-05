@@ -13,6 +13,6 @@ namespace AnalyzerBlasor.Data
         public DbSet<Device> Device { get; set; }
         public DbSet<Template> Template { get; set; }
         public DbSet<Component> Component { get; set; }
-//        public DbSet<DeviceComponent> DeviceComponent { get; set; }
+        public DbSet<DeviceComponent> DeviceComponent { get; set; }
     }
 }
