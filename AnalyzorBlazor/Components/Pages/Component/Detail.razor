@@ -1,0 +1,108 @@
+﻿@page "/component/detail/{id:int}"
+@inject IComponentService componentService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+
+<h3>Component Detail</h3>
+<EditForm Model="Component">
+    <fieldset disabled="true">
+        <div class="row">
+            <div class="col-8">
+
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Name">Name</label>
+                    </div>
+                    <div class="col-8">
+                        <InputText @bind-Value="Component.Name" class="form-control" />
+                        <ValidationMessage For="@(() => Component.Name)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Comment">Comment</label>
+                    </div>
+                    <div class="col-8">
+                        <InputTextArea @bind-Value="Component.Comment" class="form-control"></InputTextArea>
+                        <ValidationMessage For="@(() => Component.Comment)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Price">Price</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Component.Price" class="form-control" />
+                        <ValidationMessage For="@(() => Component.Price)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Time">Q-ty</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Component.Time" class="form-control" />
+                        <ValidationMessage For="@(() => Component.Time)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Pos">Pos</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Component.Pos" class="form-control" />
+                        <ValidationMessage For="@(() => Component.Pos)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Type">Type</label>
+                    </div>
+                    <div class="col-8">
+                        <InputSelect @bind-Value="Component.Type" class="form-select" id="author">
+                            <option value="">-- Select Component Type --</option>
+                            @foreach (var value in Enum.GetValues<ComponentType>())
+                            {
+                                <option value="@value">@value</option>
+                            }
+                        </InputSelect>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <br />
+    <button @onclick="GoToEdit" class="btn btn-warning">
+        <span class="oi oi-pencil"></span>
+        Edit Component
+    </button>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Component Component = new Component();
+    protected async override Task OnInitializedAsync()
+    {
+        var responses = await componentService.Get(id);
+        if (responses.Success)
+        {
+            Component = responses.Data;
+        }
+    }
+    private void GoToEdit()
+    {
+        navManager.NavigateTo($"/component/update/{Component.Id}");
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/component/");
+    }
+
+}

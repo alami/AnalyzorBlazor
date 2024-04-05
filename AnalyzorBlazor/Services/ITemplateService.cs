@@ -9,8 +9,8 @@ namespace AnalyzorBlazor.Services
         Task<List<Template>> Get();
         Task<Responses<Template>> Get(int id);
         Task<Responses<Template>> GetForUpdate(int id);
-        Task<Responses<int>> Create(Template book);
-        Task<Responses<int>> Edit(int id, Template book);
+        Task<Responses<int>> Create(Template template);
+        Task<Responses<int>> Edit(int id, Template template);
         Task<Responses<int>> Delete(int id);
 
     }

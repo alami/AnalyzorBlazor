@@ -1,0 +1,112 @@
+﻿@page "/component/update/{id:int}"
+@inject IComponentService componentService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+
+<h3>Component Edit</h3>
+<EditForm Model="Component" OnValidSubmit="HandleComponentUpdate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="col-8">
+
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Name">Name</label>
+                </div>
+                <div class="col-8">
+                    <InputText @bind-Value="Component.Name" class="form-control" />
+                    <ValidationMessage For="@(() => Component.Name)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Comment">Comment</label>
+                </div>
+                <div class="col-8">
+                    <InputTextArea @bind-Value="Component.Comment" class="form-control"></InputTextArea>
+                    <ValidationMessage For="@(() => Component.Comment)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Price">Price</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Component.Price" class="form-control" />
+                    <ValidationMessage For="@(() => Component.Price)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Time">Q-ty</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Component.Time" class="form-control" />
+                    <ValidationMessage For="@(() => Component.Time)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Pos">Pos</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Component.Pos" class="form-control" />
+                    <ValidationMessage For="@(() => Component.Pos)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Type">Type</label>
+                </div>
+                <div class="col-8">
+                    <InputSelect @bind-Value="Component.Type" class="form-select" id="author">
+                        <option value="">-- Select Component Type --</option>
+                        @foreach (var value in Enum.GetValues<ComponentType>())
+                        {
+                            <option value="@value">@value</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>            
+        </div>
+    </div>
+    <br />
+
+    <button class="btn btn-primary" type="submit">
+        <span class="oi oi-pencil"></span>
+        Update Component
+    </button>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
+
+</EditForm>
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Component Component = new();
+    protected async override Task OnInitializedAsync()
+    {
+        var componentResponse = await componentService.GetForUpdate(id);
+        if (componentResponse.Success)
+        {
+            Component = componentResponse.Data;
+        }
+    }
+    private async Task HandleComponentUpdate()
+    {
+        var response = await componentService.Edit(id, Component);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+
+    private void BackToList()
+    {
+        navManager.NavigateTo("/component/");
+    }
+}

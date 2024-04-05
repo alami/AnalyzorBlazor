@@ -1,0 +1,111 @@
+﻿@page "/component/create"
+@inject IComponentService componentService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+<h3>Create Component</h3>
+<EditForm Model="Component" OnValidSubmit="HandleComponentCreate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row">
+        <h2 class="text-info pl-3">Add Component (Parts, Accessories etc)</h2>
+
+        <div class="col-8">
+
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Name">Name</label>
+                </div>
+                <div class="col-8">
+                    <InputText @bind-Value="Component.Name" class="form-control" />
+                    <ValidationMessage For="@(() => Component.Name)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Comment">Comment</label>
+                </div>
+                <div class="col-8">
+                    <InputTextArea @bind-Value="Component.Comment" class="form-control"></InputTextArea>
+                    <ValidationMessage For="@(() => Component.Comment)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Price</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Component.Price" class="form-control" />
+                    <ValidationMessage For="@(() => Component.Price)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="PersntResult">Time</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Component.Time" class="form-control" />
+                    <ValidationMessage For="@(() => Component.Time)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Shipping_price">Pos</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Component.Pos" class="form-control" />
+                    <ValidationMessage For="@(() => Component.Pos)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Tester_time">Type</label>
+                </div>
+                <div class="col-8">
+                    <InputSelect @bind-Value="Component.Type" class="form-select" id="author">
+                        <option value="">-- Select Component Type --</option>
+                        @foreach (var value in Enum.GetValues<ComponentType>())
+                        {
+                            <option value="@value">@value</option>
+                        }
+                    </InputSelect>
+                </div>             
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <button class="btn btn-primary" type="submit">
+        <span class="oi oi-pencil"></span>
+        Create Component
+    </button>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
+
+</EditForm>
+@code {
+    private Component Component = new();
+    /*private List<Component> Components = new();
+    protected override async Task OnInitializedAsync()
+    {
+        Components = Enumerable.Range(0, Enum.GetNames(typeof(ComponentType)).Length).ToList();
+    }*/
+    private async Task HandleComponentCreate()
+    {
+        BackToList();
+        var response = await componentService.Create(Component);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+
+    private void BackToList()
+    {
+        navManager.NavigateTo("/component/");
+    }
+}
