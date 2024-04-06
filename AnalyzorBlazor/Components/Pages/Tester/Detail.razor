@@ -5,100 +5,101 @@
 @rendermode InteractiveServer
 
 <h3>Device Details </h3>
-<EditForm Model="Device">
-    <fieldset disabled="true">
-        <div class="form-group row p-1">
-            <div class="col-4">
-                <label>Name</label>
-            </div>
-            <div class="col-8">
-                <InputText @bind-Value="Device.Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+    <EditForm Model="Device">
+        <fieldset disabled="true">
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Name</label>
+                </div>
+                <div class="col-8">
+                    <InputText @bind-Value="Device.Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
 
-        </div>
-        <div class="form-group row p-1">
-            <div class="col-4">
-                <label>Total Count</label>
             </div>
-            <div class="col-8">
-                <InputNumber @bind-Value="Device.TotalCount" class="form-control" />
-                <span asp-validation-for="TotalCount" class="text-danger"></span>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Total Count</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Device.TotalCount" class="form-control" />
+                    <span asp-validation-for="TotalCount" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-group row p-1">
-            <div class="col-4">
-                <label>Tester Time</label>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Tester Time</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Device.TesterTime" class="form-control" />
+                    <span asp-validation-for="TesterTime" class="text-danger"></span>
+                </div>
             </div>
-            <div class="col-8">
-                <InputNumber @bind-Value="Device.TesterTime" class="form-control" />
-                <span asp-validation-for="TesterTime" class="text-danger"></span>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>SN</label>
+                </div>
+                <div class="col-8">
+                    <InputText @bind-Value="Device.SN" class="form-control" />
+                    <span asp-validation-for="SN" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-group row p-1">
-            <div class="col-4">
-                <label>SN</label>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Model</label>
+                </div>
+                <div class="col-8">
+                    <InputText @bind-Value="Device.Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
             </div>
-            <div class="col-8">
-                <InputText @bind-Value="Device.SN" class="form-control" />
-                <span asp-validation-for="SN" class="text-danger"></span>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Comments</label>
+                </div>
+                <div class="col-8">
+                    <InputTextArea @bind-Value="Device.Comments" class="form-control"></InputTextArea>
+                    <span asp-validation-for="Comments" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-group row p-1">
-            <div class="col-4">
-                <label>Model</label>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Create Time</label>
+                </div>
+                <div class="col-8">
+                    <InputDate @bind-Value="Device.CreateT" class="form-control"></InputDate>
+                    <span asp-validation-for="CreateT" class="text-danger"></span>
+                </div>
             </div>
-            <div class="col-8">
-                <InputText @bind-Value="Device.Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group row p-1">
-            <div class="col-4">
-                <label>Comments</label>
-            </div>
-            <div class="col-8">
-                <InputTextArea @bind-Value="Device.Comments" class="form-control"></InputTextArea>
-                <span asp-validation-for="Comments" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group row p-1">
-            <div class="col-4">
-                <label>Create Time</label>
-            </div>
-            <div class="col-8">
-                <InputDate @bind-Value="Device.CreateT" class="form-control"></InputDate>
-                <span asp-validation-for="CreateT" class="text-danger"></span>
-            </div>
-        </div>
-        @if (Device.UpdateT!=null)
-        {
-        <div class="form-group row p-1">
-            <div class="col-4">
-                <label>Update Time</label>
-            </div>
-            <div class="col-8">
-                <InputDate @bind-Value="Device.UpdateT" class="form-control"></InputDate>
-                <span asp-validation-for="UpdateT" class="text-danger"></span>
-            </div>
-        </div>
-        }
-    </fieldset>
-    <br />
-    <button @onclick="GoToEdit" class="btn btn-warning">
-        <span class="oi oi-pencil"></span>
-        Edit Device
-    </button>
-    <button @onclick="BackToList" class="btn btn-outline-secondary">
-        <span class="oi oi-media-skip-backward"></span>
-        Back To List
-    </button>
+            @if (Device.UpdateT != null)
+            {
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label>Update Time</label>
+                    </div>
+                    <div class="col-8">
+                        <InputDate @bind-Value="Device.UpdateT" class="form-control"></InputDate>
+                        <span asp-validation-for="UpdateT" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+        </fieldset>
+<br />
+<button @onclick="GoToEdit" class="btn btn-warning">
+    <span class="oi oi-pencil"></span>
+    Edit Device
+</button>
+<button @onclick="BackToList" class="btn btn-outline-secondary">
+    <span class="oi oi-media-skip-backward"></span>
+    Back To List
+</button>
 </EditForm>
 
 @code {
     [Parameter]
     public int id { get; set; }
     private Device Device = new Device();
+    private DeviceComponent acc;
     protected async override Task OnInitializedAsync()
     {
         var responses = await deviceService.Get(id);
@@ -106,6 +107,7 @@
         {
             Device = responses.Data;
         }
+        var acc = await deviceService.GetDevComp(id, ComponentType.Accessories);
     }
     private void GoToEdit()
     {

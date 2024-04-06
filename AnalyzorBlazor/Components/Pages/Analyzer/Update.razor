@@ -1,0 +1,255 @@
+﻿@page "/analyzer/update/{id:int}"
+@inject IDeviceService deviceService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+
+<h3>Edit Details </h3>
+<EditForm Model="Device">
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Name">Name</label>
+        </div>
+        <div class="col-8">
+            <InputText @bind-Value="Device.Name" class="form-control" disabled="true" />
+            <ValidationMessage For="@(() => Device.Name)" />
+        </div>
+
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="TotalCount">Quantity</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.TotalCount" class="form-control" />
+            <ValidationMessage For="@(() => Device.TotalCount)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Shipping_price">Shipping price</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Shipping_price" class="form-control" />
+            <ValidationMessage For="@(() => Device.Shipping_price)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="TesterTime">Tester Time<br />(Updated by Tester)</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.TesterTime" class="form-control" disabled="true" />
+            <ValidationMessage For="@(() => Device.TesterTime)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Tester_time_price">Tester_time_price</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Tester_time_price" class="form-control" />
+            <ValidationMessage For="@(() => Device.Tester_time_price)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Receiver_time">Receiver time</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Receiver_time" class="form-control" />
+            <ValidationMessage For="@(() => Device.Receiver_time)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Receiver_time_price">Receiver time price</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Receiver_time_price" class="form-control" />
+            <ValidationMessage For="@(() => Device.Receiver_time_price)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="TesterTime">Lister time</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Lister_time" class="form-control" />
+            <ValidationMessage For="@(() => Device.Lister_time)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Lister_time_price">Lister time price</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Lister_time_price" class="form-control" />
+            <ValidationMessage For="@(() => Device.Lister_time_price)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Fullfilment_time">Fullfilment time</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Fullfilment_time" class="form-control" />
+            <ValidationMessage For="@(() => Device.Fullfilment_time)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Fullfilment_time_price">Fullfilment time price</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Fullfilment_time_price" class="form-control" />
+            <ValidationMessage For="@(() => Device.Fullfilment_time_price)" />
+        </div>
+    </div>
+
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Market_fees">Market fees</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Market_fees" class="form-control" />
+            <ValidationMessage For="@(() => Device.Market_fees)" />
+        </div>
+    </div>
+
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Dissassembly_time">Dissassembly time</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Dissassembly_time" class="form-control" />
+            <ValidationMessage For="@(() => Device.Dissassembly_time)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Disasembler_time_price">Disasembler time price</label>
+        </div>
+        <div class="col-8">
+            <InputNumber @bind-Value="Device.Disasembler_time_price" class="form-control" />
+            <ValidationMessage For="@(() => Device.Disasembler_time_price)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="SN">SN</label>
+        </div>
+        <div class="col-8">
+            <InputText @bind-Value="Device.SN" class="form-control" disabled="true" />
+            <ValidationMessage For="@(() => Device.SN)" />
+        </div>
+    </div>
+
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Model">Model</label>
+        </div>
+        <div class="col-8">
+            <InputText @bind-Value="Device.Model" class="form-control" disabled="true" />
+            <ValidationMessage For="@(() => Device.Model)" />
+        </div>
+    </div>
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="Comments">Tester Comments</label>
+        </div>
+        <div class="col-8">
+            <InputTextArea @bind-Value="Device.Comments" class="form-control" disabled="true"></InputTextArea>
+            <ValidationMessage For="@(() => Device.Comments)" />
+        </div>
+    </div>
+    @if (Device.OtherCommentsAz != null)
+    {
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="OtherComments">Other Tester Comments</label>
+        </div>
+        <div class="col-8">
+            <InputTextArea @bind-Value="Device.OtherComments" class="form-control" disabled="true"></InputTextArea>
+            <ValidationMessage For="@(() => Device.OtherComments)" />
+        </div>
+    </div>
+    }
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="CreateT">Create Time By Tester</label>
+        </div>
+        <div class="col-8">
+            <InputDate @bind-Value="Device.CreateT" class="form-control" disabled="true"></InputDate>
+            <ValidationMessage For="@(() => Device.CreateT)" />
+        </div>
+    </div>
+    @if (Device.UpdateT != null)
+    {
+        <div class="form-group row p-1">
+            <div class="col-4">
+                <label for="UpdateT">Last Update Time by Tester</label>
+            </div>
+            <div class="col-8">
+                <InputDate @bind-Value="Device.UpdateT" class="form-control" disabled="true"></InputDate>
+                <ValidationMessage For="@(() => Device.UpdateT)" />
+            </div>
+        </div>
+    }
+    <div class="form-group row p-1">
+        <div class="col-4">
+            <label for="ModelName">Model Name By Analyzer</label>
+        </div>
+        <div class="col-8">
+            <InputText @bind-Value="Device.ModelName" class="form-control" />
+            <ValidationMessage For="@(() => Device.ModelName)" />
+        </div>
+    </div>
+        <div class="form-group row p-1">
+            <div class="col-4">
+                <label for="OtherCommentsAz">Other Analyzer Comments</label>
+            </div>
+            <div class="col-8">
+                <InputTextArea @bind-Value="Device.OtherCommentsAz" class="form-control"></InputTextArea>
+                <ValidationMessage For="@(() => Device.OtherCommentsAz)" />
+            </div>
+        </div>
+
+    <br />
+    <button @onclick="GoToEdit" class="btn btn-warning">
+        <span class="oi oi-pencil"></span>
+        Edit Device
+    </button>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Device Device = new Device();
+    protected async override Task OnInitializedAsync()
+    {
+        var responses = await deviceService.Get(id);
+        if (responses.Success)
+        {
+            Device = responses.Data;
+        }
+    }
+    private async void GoToEdit()
+    {
+        var response = await deviceService.AEdit(id, Device);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/analyzer/");
+    }
+
+
+}

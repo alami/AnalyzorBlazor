@@ -12,6 +12,8 @@ namespace AnalyzorBlazor.Services
         Task<Responses<int>> Create(Device device);
         Task<Responses<int>> Edit(int id, Device device);
         Task<Responses<int>> Delete(int id);
+        Task<Responses<int>> AEdit(int id, Device device);
+        Task<List<DeviceComponent>> GetDevComp(int id, ComponentType type);
 
     }
 }

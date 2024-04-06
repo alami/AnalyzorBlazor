@@ -112,6 +112,7 @@ namespace AnalyzorBlazor.Models
         public DateTime? CreateA { get; set; }
         [Display(Name = "Last Update Date By Analyzer")]
         public DateTime? UpdateA { get; set; }
+        [Required]
         [Display(Name = "Template Name")]
         public string Template { get; set; }
     }

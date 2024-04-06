@@ -75,9 +75,22 @@ namespace AnalyzorBlazor.Services
         }
         public async Task<Responses<int>> Create(Device device)
         {
-            Responses<int> responses = new();
+            Responses<int> responses = new();            
             try
             {
+                Template template = _db.Template.FirstOrDefault (u=>u.Name==device.Template);
+                device.Shipping_price = template.Shipping_price;
+                device.TesterTime = template.Tester_time;
+                device.Tester_time_price = template.Tester_time_price;
+                device.Receiver_time = template.Receiver_time;
+                device.Receiver_time_price = template.Receiver_time_price;
+                device.Lister_time = template.Lister_time;
+                device.Lister_time_price = template.Lister_time_price;
+                device.Fullfilment_time = template.Fullfilment_time;
+                device.Fullfilment_time_price = template.Fullfilment_time_price;
+                device.Market_fees = template.Market_fees;
+                device.Dissassembly_time = template.Dissassembly_time;
+                device.Disasembler_time_price = template.Disasembler_time_price;
                 device.CreateT = DateTime.Now;
                 _db.Device.Add(device);
                 _db.SaveChanges();
@@ -126,5 +139,28 @@ namespace AnalyzorBlazor.Services
             }
             return responses;
         }
+        public async Task<Responses<int>> AEdit(int id, Device device)
+        {
+            Responses<int> responses = new();
+            try
+            {
+                if (device.CreateA==null) device.CreateA = DateTime.Now;
+                _db.Device.Update(device);
+                _db.SaveChanges();
+                responses.Success = true;
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"/analyzer/edit/{id} Exception {ex}";
+            }
+            return responses;
+        }
+        public async Task<List<DeviceComponent>> GetDevComp(int id, ComponentType type)
+        {
+            List<DeviceComponent> objList = _db.DeviceComponent.Where(u=>u.DeviceId==id&&u.Type==type).ToList();
+            return objList;
+        }
+
     }
 }
