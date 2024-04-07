@@ -1,253 +1,377 @@
 ﻿@page "/analyzer/detailall/{id:int}"
 @inject IDeviceService deviceService
+@inject IComponentService compService
+@inject ITemplateService templateService
 @inject IJSRuntime js
 @inject NavigationManager navManager
 @rendermode InteractiveServer
 
 <h3>Device Details </h3>
-<div class="col-6">
+<div class="row">
+    <div class="col-6">
 
-    <EditForm Model="Device">
-        <fieldset disabled="true">
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Name">Name</label>
+        <EditForm Model="Device">
+            <fieldset disabled="true">
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Name">Name</label>
+                    </div>
+                    <div class="col-8">
+                        <InputText @bind-Value="Device.Name" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Name)" />
+                    </div>
+
                 </div>
-                <div class="col-8">
-                    <InputText @bind-Value="Device.Name" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Name)" />
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="TotalCount">Quantity</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.TotalCount" class="form-control" />
+                        <ValidationMessage For="@(() => Device.TotalCount)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Shipping_price">Shipping price</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Shipping_price" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Shipping_price)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="TesterTime">Tester Time<br />(Updated by Tester)</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.TesterTime" class="form-control" />
+                        <ValidationMessage For="@(() => Device.TesterTime)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Tester_time_price">Tester_time_price</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Tester_time_price" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Tester_time_price)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Receiver_time">Receiver time</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Receiver_time" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Receiver_time)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Receiver_time_price">Receiver time price</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Receiver_time_price" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Receiver_time_price)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="TesterTime">Lister time</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Lister_time" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Lister_time)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Lister_time_price">Lister time price</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Lister_time_price" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Lister_time_price)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Fullfilment_time">Fullfilment time</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Fullfilment_time" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Fullfilment_time)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Fullfilment_time_price">Fullfilment time price</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Fullfilment_time_price" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Fullfilment_time_price)" />
+                    </div>
                 </div>
 
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="TotalCount">Quantity</label>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Market_fees">Market fees</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Market_fees" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Market_fees)" />
+                    </div>
                 </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.TotalCount" class="form-control" />
-                    <ValidationMessage For="@(() => Device.TotalCount)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Shipping_price">Shipping price</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Shipping_price" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Shipping_price)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="TesterTime">Tester Time<br />(Updated by Tester)</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.TesterTime" class="form-control" />
-                    <ValidationMessage For="@(() => Device.TesterTime)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Tester_time_price">Tester_time_price</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Tester_time_price" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Tester_time_price)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Receiver_time">Receiver time</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Receiver_time" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Receiver_time)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Receiver_time_price">Receiver time price</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Receiver_time_price" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Receiver_time_price)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="TesterTime">Lister time</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Lister_time" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Lister_time)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Lister_time_price">Lister time price</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Lister_time_price" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Lister_time_price)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Fullfilment_time">Fullfilment time</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Fullfilment_time" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Fullfilment_time)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Fullfilment_time_price">Fullfilment time price</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Fullfilment_time_price" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Fullfilment_time_price)" />
-                </div>
-            </div>
 
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Market_fees">Market fees</label>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Dissassembly_time">Dissassembly time</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Dissassembly_time" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Dissassembly_time)" />
+                    </div>
                 </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Market_fees" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Market_fees)" />
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Disasembler_time_price">Disasembler time price</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.Disasembler_time_price" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Disasembler_time_price)" />
+                    </div>
                 </div>
-            </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="SN">SN</label>
+                    </div>
+                    <div class="col-8">
+                        <InputText @bind-Value="Device.SN" class="form-control" />
+                        <ValidationMessage For="@(() => Device.SN)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Model">Model</label>
+                    </div>
+                    <div class="col-8">
+                        <InputText @bind-Value="Device.Model" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Model)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Comments">Tester Comments</label>
+                    </div>
+                    <div class="col-8">
+                        <InputTextArea @bind-Value="Device.Comments" class="form-control"></InputTextArea>
+                        <ValidationMessage For="@(() => Device.Comments)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="OtherComments">Other Tester Comments</label>
+                    </div>
+                    <div class="col-8">
+                        <InputTextArea @bind-Value="Device.OtherComments" class="form-control"></InputTextArea>
+                        <ValidationMessage For="@(() => Device.OtherComments)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="CreateT">Create Time By Tester</label>
+                    </div>
+                    <div class="col-8">
+                        <InputDate @bind-Value="Device.CreateT" class="form-control"></InputDate>
+                        <ValidationMessage For="@(() => Device.CreateT)" />
+                    </div>
+                </div>
+                @if (Device.UpdateT != null)
+                {
+                    <div class="form-group row p-1">
+                        <div class="col-4">
+                            <label for="UpdateT">Last Update Time by Tester</label>
+                        </div>
+                        <div class="col-8">
+                            <InputDate @bind-Value="Device.UpdateT" class="form-control"></InputDate>
+                            <ValidationMessage For="@(() => Device.UpdateT)" />
+                        </div>
+                    </div>
+                }
+                @if (Device.CreateA != null)
+                {
+                    <div class="form-group row p-1">
+                        <div class="col-4">
+                            <label for="CreateA">Edit Time By Analyzer</label>
+                        </div>
+                        <div class="col-8">
+                            <InputDate @bind-Value="Device.CreateA" class="form-control"></InputDate>
+                            <ValidationMessage For="@(() => Device.CreateA)" />
+                        </div>
+                    </div>
+                }
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="OtherCommentsAz">Other Analyzer Comment</label>
+                    </div>
+                    <div class="col-8">
+                        <InputTextArea @bind-Value="Device.OtherCommentsAz" class="form-control"></InputTextArea>
+                        <ValidationMessage For="@(() => Device.OtherCommentsAz)" />
+                    </div>
+                </div>
 
+            </fieldset>
+            <br />
+            <button @onclick="GoToEdit" class="btn btn-warning">
+                <span class="oi oi-pencil"></span>
+                Edit Device
+            </button>
+            <button @onclick="BackToList" class="btn btn-outline-secondary">
+                <span class="oi oi-media-skip-backward"></span>
+                Back To List
+            </button>
+        </EditForm>
+    </div>
+    <div class="col-6">
+        @if (AccList.Count > 0)
+        {
+            <h3>Device Accessories </h3>
             <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Dissassembly_time">Dissassembly time</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Dissassembly_time" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Dissassembly_time)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Disasembler_time_price">Disasembler time price</label>
-                </div>
-                <div class="col-8">
-                    <InputNumber @bind-Value="Device.Disasembler_time_price" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Disasembler_time_price)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="SN">SN</label>
-                </div>
-                <div class="col-8">
-                    <InputText @bind-Value="Device.SN" class="form-control" />
-                    <ValidationMessage For="@(() => Device.SN)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Model">Model</label>
-                </div>
-                <div class="col-8">
-                    <InputText @bind-Value="Device.Model" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Model)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Comments">Tester Comments</label>
-                </div>
-                <div class="col-8">
-                    <InputTextArea @bind-Value="Device.Comments" class="form-control"></InputTextArea>
-                    <ValidationMessage For="@(() => Device.Comments)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="OtherComments">Other Tester Comments</label>
-                </div>
-                <div class="col-8">
-                    <InputTextArea @bind-Value="Device.OtherComments" class="form-control"></InputTextArea>
-                    <ValidationMessage For="@(() => Device.OtherComments)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="CreateT">Create Time By Tester</label>
-                </div>
-                <div class="col-8">
-                    <InputDate @bind-Value="Device.CreateT" class="form-control"></InputDate>
-                    <ValidationMessage For="@(() => Device.CreateT)" />
-                </div>
-            </div>
-            @if (Device.UpdateT != null)
+                <div class="col-4"><label>Name</label></div>
+                <div class="col-2"><label>Price</label></div>
+                <div class="col-2"><label>Q-ty</label></div>
+            </div> @foreach (var t in AccList)
             {
                 <div class="form-group row p-1">
                     <div class="col-4">
-                        <label for="UpdateT">Last Update Time by Tester</label>
+                        @{
+                            var componentId = t.ComponentId;
+                            var compName = CompList.FirstOrDefault(u => u.Id == componentId).Name;
+                        }
+                        <label>@compName <span style="font-size:x-small">(@componentId)</span></label>
                     </div>
                     <div class="col-8">
-                        <InputDate @bind-Value="Device.UpdateT" class="form-control"></InputDate>
-                        <ValidationMessage For="@(() => Device.UpdateT)" />
+                        <label>@t.Value</label>
                     </div>
                 </div>
             }
-            @if (Device.CreateA != null)
+        }
+        <hr />
+        @if (PartsList.Count > 0)
+        {
+            <h3>Device Parts </h3>
+            <div class="form-group row p-1">
+                <div class="col-4"><label>Name</label></div>
+                <div class="col-2"><label>Price</label></div>
+                <div class="col-2"><label>Q-ty</label></div>
+            </div>
+            @foreach (var t in PartsList)
             {
                 <div class="form-group row p-1">
                     <div class="col-4">
-                        <label for="CreateA">Edit Time By Analyzer</label>
+                        @{
+                            var componentId = t.ComponentId;
+                            var compName = CompList.FirstOrDefault(u => u.Id == componentId).Name;
+                        }
+                        <label>@compName <span style="font-size:x-small">(@componentId)</span></label>
                     </div>
-                    <div class="col-8">
-                        <InputDate @bind-Value="Device.CreateA" class="form-control"></InputDate>
-                        <ValidationMessage For="@(() => Device.CreateA)" />
+                    <div class="col-2">
+                        <label>@t.Value</label>
+                    </div>
+                    <div class="col-2">
+                        <label>@t.Qty</label>
                     </div>
                 </div>
             }
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="OtherCommentsAz">Other Analyzer Comment</label>
-                </div>
-                <div class="col-8">
-                    <InputTextArea @bind-Value="Device.OtherCommentsAz" class="form-control"></InputTextArea>
-                    <ValidationMessage For="@(() => Device.OtherCommentsAz)" />
-                </div>
-            </div>
-
-        </fieldset>
-        <br />
-        <button @onclick="GoToEdit" class="btn btn-warning">
-            <span class="oi oi-pencil"></span>
-            Edit Device
-        </button>
-        <button @onclick="BackToList" class="btn btn-outline-secondary">
-            <span class="oi oi-media-skip-backward"></span>
-            Back To List
-        </button>
-    </EditForm>
+        }
+    </div>
 </div>
-    @code {
-        [Parameter]
-        public int id { get; set; }
-        private Device Device = new Device();
-        protected async override Task OnInitializedAsync()
-        {
-            var responses = await deviceService.Get(id);
-            if (responses.Success)
-            {
-                Device = responses.Data;
-            }
-        }
-        private void GoToEdit()
-        {
-            navManager.NavigateTo($"/analyzer/update/{Device.Id}");
-        }
-        private void BackToList()
-        {
-            navManager.NavigateTo("/analyzer/");
-        }
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Device Device = new Device();
+    private List<DeviceComponent> AccList = new();
+    private List<DeviceComponent> PartsList = new();
+    private List<Component> CompList = new();
+    double[] job;
+    double[] job0;
 
+
+    protected async override Task OnInitializedAsync()
+    {
+        var responses = await deviceService.Get(id);
+        if (responses.Success)
+        {
+            Device = responses.Data;
+        }
+        AccList = await deviceService.GetDevComp(id, ComponentType.Accessories);
+        PartsList = await deviceService.GetDevComp(id, ComponentType.Parts);
+        CompList = await compService.Get();
     }
+    private void GoToEdit()
+    {
+        navManager.NavigateTo($"/analyzer/update/{Device.Id}");
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/analyzer/");
+    }
+
+    private void Calculate ()
+    {
+        job = new[] {
+(double)Device.TesterTime.Value / 60 * (double)Device.Tester_time_price.Value,       // 0 -tester
+(double)Device.Receiver_time.Value / 60 * (double)Device.Receiver_time_price.Value,  // 1-reciever
+(double)Device.Lister_time.Value / 60 * (double)Device.Lister_time_price.Value,      // 2-lister
+(double)Device.Fullfilment_time.Value / 60 * (double)Device.Fullfilment_time_price.Value, //3-fullfilment
+(double)Device.Dissassembly_time.Value / 60 * (double)Device.Disasembler_time_price.Value,//4-disasembler
+             };
+    }
+
+    private double CostOfAccessories()
+    {
+        double sum = 0;
+        foreach (var item in AccList)
+            sum += (double)item.Value * ((item.Qty == null) ? 1 : (int)item.Qty);
+        return sum;
+    }
+    private double CostOfParts()
+    {
+        double sum = 0;
+        foreach (var item in PartsList)
+            sum += (double)item.Value * ((item.Qty == null) ? 1 : (int)item.Qty);
+        return sum;
+    }
+    private double B32()
+    {
+        if (Device.HoldUnit == null) return 0;
+        double b32 = (double)Device.HoldUnit;
+        b32 = b32 - CostOfAccessories() - Device.Shipping_price.Value - job0[0] - job0[1] - job0[2] - job0[3];
+        return b32 - (b32 / 100 * Device.Market_fees.Value);
+    }
+    private int QtyAllParts()
+    {
+        int qty = 0;
+        foreach (var item in PartsList)
+            qty += ((item.Qty == null) ? 1 : (int)item.Qty);
+        return qty;
+    }
+    private double F32()
+    {
+        double f32 = CostOfParts();
+        f32 -= (double)QtyAllParts() * Device.Shipping_price.Value;
+        f32 -= job[0];
+        f32 -= job[3] * QtyAllParts();
+        f32 -= job[4];
+        double market_fees = (double)Device.Market_fees.Value;
+        return f32 - (f32 / 100 * market_fees);
+    }
+    private int QtyOfParts()
+    {
+        int qty = 0;
+        foreach (var item in PartsList)
+            qty += ((item.Qty == null) ? 1 : (int)item.Qty);
+        return qty;
+    }
+
+}
