@@ -284,17 +284,61 @@
                 </div>
             }
         }
+        <hr />
+        <button @onclick="Calculate" class="btn btn-success">
+            <span class="oi oi-media-skip-backward"></span>
+            Calculate
+        </button>
+        <hr />
+
+        <table class="table">
+            <tr>
+                <th style="text-align:center; width:30%">Calculate</th>
+                <th style="width:20%">B</th>
+                <th>C</th>
+                <th>F</th>
+                <th>G</th>
+            </tr>
+            <tr>
+                <td><span style="font-size:x-small">(32)</span><b>For 1 hold unit</b></td>
+                <td style="background-color: yellow">@B32</td>
+                <td></td>
+                <td style="background-color: yellow">(@F32mod)</td>
+                <td style="background-color: yellow">@G32</td>
+            </tr>
+            <tr>
+                <td><span style="font-size:small">(33)</span><b>Total All</b></td>
+                <td style="background-color: orange">@B33</td>
+                <td style="background-color: lightblue">@C33</td>
+                <td style="background-color: orange">(@F33mod)</td>
+                <td style="background-color: lightblue">(@G33mod)</td>
+
+            </tr>
+            <tr>
+                <td><span style="font-size:small">(36)</span><b>Results,%</b></td>
+                <td style="background-color: lightgreen">@B36</td>
+            </tr>
+            <tr>
+                <th>Conclusion</th>
+                <td colspan="2">@Conclusion</td>
+                <td colspan="2">@BG</td>
+            </tr>
+        </table>
     </div>
 </div>
 @code {
     [Parameter]
     public int id { get; set; }
     private Device Device = new Device();
+    private Template template  = new ();
     private List<DeviceComponent> AccList = new();
     private List<DeviceComponent> PartsList = new();
     private List<Component> CompList = new();
-    double[] job;
-    double[] job0;
+    private double[] job;
+    private double[] job0;
+    private double C32, C33, B32, B33, B36, G32, G33, F32, F33;
+    private double C32mod, C33mod, B32mod, B33mod, G32mod, G33mod, F32mod, F33mod, BG;
+    private string Conclusion;
 
 
     protected async override Task OnInitializedAsync()
@@ -303,6 +347,12 @@
         if (responses.Success)
         {
             Device = responses.Data;
+        }
+        var responses1 = await templateService.Get(1);
+        if (responses1.Success)
+        {
+            //.FirstOrDefault(u => u.Name == Device.Template);
+            template = responses1.Data;
         }
         AccList = await deviceService.GetDevComp(id, ComponentType.Accessories);
         PartsList = await deviceService.GetDevComp(id, ComponentType.Parts);
@@ -326,6 +376,53 @@
 (double)Device.Fullfilment_time.Value / 60 * (double)Device.Fullfilment_time_price.Value, //3-fullfilment
 (double)Device.Dissassembly_time.Value / 60 * (double)Device.Disasembler_time_price.Value,//4-disasembler
              };
+
+        job0 = new[] {
+(double)template.Tester_time / 60 * (double)template.Tester_time_price,       // 0 -tester
+(double)template.Receiver_time / 60 * (double)template.Receiver_time_price,  // 1-reciever
+(double)template.Lister_time / 60 * (double)template.Lister_time_price,      // 2-lister
+(double)template.Fullfilment_time / 60 * (double)template.Fullfilment_time_price, //3-fullfilment
+(double)template.Dissassembly_time / 60 * (double)template.Disasembler_time_price,//4-disasembler
+             };
+
+        B32 = Math.Round(fnB32(), 2);
+        F32 = Math.Round(fnF32(), 2);
+        G32 = Math.Round((job[1] + job[2]) * QtyOfParts(), 2);  // 1-reciever 2-lister;                                 
+
+        B33 = Math.Round(B32 * Device.TotalCount.Value, 2);
+        C33 = Math.Round(B33 - (B33 / 100 * Device.PersntLost.Value), 2);
+        F33 = Math.Round((F32 * Device.TotalCount.Value) - G32, 2);
+        G33 = Math.Round(F33 - (F33 / 100 * Device.PersntLost.Value), 2);
+
+        B36 = Math.Round((G33 - C33) / C33 * 100, 2);
+
+        F32mod = (F32 < 0) ? -F32 : F32;
+        F33mod = (F33 < 0) ? -F33 : F33;
+        G33mod = (G33 < 0) ? -G33 : G33;
+
+        Conclusion = "non answer";
+        BG = (B33 - G33) / B33;
+        if (B33 < 0 && G33 < 0)
+        {
+            Device.Сonclusion = Сonclusions.BuyOnEconomics;
+            Conclusion = "Buy On Economics";
+        }
+        else if (BG > -10 && BG < 10)
+        {
+            Device.Сonclusion = Сonclusions.For5050;
+            Conclusion = "For 50 / 50";
+        }
+        else if (B33 > G33)
+        {
+            Device.Сonclusion = Сonclusions.ForParts;
+            Conclusion = "ForParts";
+        }
+        else if (B33 > G33)
+        {
+            Device.Сonclusion = Сonclusions.ForOnHold;
+            Conclusion = "ForOnHold";
+        }
+
     }
 
     private double CostOfAccessories()
@@ -342,7 +439,7 @@
             sum += (double)item.Value * ((item.Qty == null) ? 1 : (int)item.Qty);
         return sum;
     }
-    private double B32()
+    private double fnB32()
     {
         if (Device.HoldUnit == null) return 0;
         double b32 = (double)Device.HoldUnit;
@@ -356,7 +453,7 @@
             qty += ((item.Qty == null) ? 1 : (int)item.Qty);
         return qty;
     }
-    private double F32()
+    private double fnF32()
     {
         double f32 = CostOfParts();
         f32 -= (double)QtyAllParts() * Device.Shipping_price.Value;
