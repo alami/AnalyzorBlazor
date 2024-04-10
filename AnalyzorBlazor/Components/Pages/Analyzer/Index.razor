@@ -4,10 +4,11 @@
 @inject NavigationManager navManager
 @rendermode InteractiveServer
 
+<PageTitle>Analyzer Devices List</PageTitle>
 <div class="container p-2">
     <div class="row pt-4">
         <div class="col-12">
-            <h2>All Device List</h2>
+            <h2>Analyzer Device List</h2>
         </div>
     </div>
 
@@ -27,8 +28,7 @@
                     <th>Other Comments T</th>
                     <th>Creation Date by T</th>
                     <th>Updated Date by T</th>
-                    <th>Edit</th>
-                    <th>Stage action</th>
+                    <th>Action</th>
                 </tr>
                 <tr>
                 </tr>
@@ -56,58 +56,18 @@
                                 <a href="/analyzer/detailall/@obj.Id" class="btn btn-warning mx-2">
                                     <i class="fas fa-database"></i>
                                 </a>
+                                @if (obj.Stage == null)
+                                {
+                                    <button @onclick=@(()=>Parts(obj.Id)) class="btn btn-info mx-2">
+                                        <i class="fas fa-list"></i><span style="font-size:xx-small;padding:0;margin:0">Parts</span>
+                                    </button>
+                                }
                                 <a href="/analyzer/update/@obj.Id" class="btn btn-warning mx-2">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             </div>
                         </td>
-                        <td class="text-center">
-                            <div class="w075 btn-group" role="group">
-                                @if (obj.Stage == null)
-                                {
-                                    <button @onclick=@(()=>Parts(obj.Id)) class="btn btn-info mx-2">
-                                        <i class="fa-solid fa-user-tie"></i> Parts
-                                    </button>
-                                }
-                                @*@if (obj.Stage == null)
-        {
-            <a asp-controller="SInit" asp-action="Create" asp-route-Id="@obj.Id" class="btn btn-success disabled">
-                <i class="fa-solid fa-user-tie"></i> Tester
-            </a>
-        }*@
-                                @if (obj.Stage == Stages.Init)
-                                {
-                                    <a asp-controller="SInit" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-1 disabled">
-                                        <i class="fa-solid fa-user-tie"></i>Tester
-                                    </a>
-                                }
-                                @if (obj.Stage == Stages.Tester)
-                                {
-                                    <a asp-controller="Analyzer" asp-action="Create" asp-route-Id="@obj.Id" class="btn btn-info mx-1">
-                                        <i class="fa-solid fa-user-tie"></i> Parts
-                                    </a>
-                                }
-                                @if (obj.Stage == Stages.Analyser)
-                                {
-                                    <button @onclick=@(()=>Calculate(obj.Id)) class="btn btn-warning mx-2">
-                                        <i class="fa-solid fa-user-tie"></i> Calculate
-                                    </button>
-                                }
-                                @if (obj.Stage == Stages.Calculate)
-                                {
-                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-info mx-1 disabled">
-                                        <i class="fa-solid fa-user-tie"></i> Analyser
-                                    </a>
-                                }
-                                @if (obj.Stage == Stages.Result)
-                                {
-                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
-                                        <i class="fa-solid fa-user-tie"></i> Edit Result
-                                    </a>
-                                }
 
-                            </div>
-                        </td>
                     </tr>
                 }
             </tbody>
@@ -128,7 +88,7 @@
     }
     private async Task Parts(int deviceId)
     {
-        navManager.NavigateTo($"/analyzer/parts/{deviceId}");
+        navManager.NavigateTo($"/analyzer/addparts/{deviceId}");
     }
     private async Task Calculate(int deviceId)
     {

@@ -6,11 +6,11 @@
 
 
 
-<PageTitle>All Devices</PageTitle>
+<PageTitle>Tester Devices List</PageTitle>
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2>Devices List</h2>
+            <h2>Tester Devices List</h2>
         </div>
         <div class="col-6 text-end">
             <a href="/tester/create" class="btn btn-primary">
@@ -30,9 +30,9 @@
                     <th>Serial Number</th>
                     <th>Model</th>
                     <th>Comments</th>
-                    <th>Creation Date by Tester</th>
-                    <th>Edit & Delete</th>
-                    <th>Stage action</th>
+                    <th>Creation Date</th>
+                    <th>Update Date</th>
+                    <th>Tester Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,10 +50,14 @@
                         <td width=7%>@obj.Model</td>
                         <td width=7%>@obj.Comments</td>
                         <td width=7%>@obj.CreateT</td>
+                        <td width=7%>@obj.UpdateT</td>
                         <td>
                             <div class="w075 btn-group" role="group">
                                 <a href="/tester/detailacc/@obj.Id" class="btn btn-warning mx-2">
                                     <i class="fas fa-database"></i>
+                                </a>
+                                <a href="/tester/addacc/@obj.Id" class="btn btn-success mx-2">
+                                    <i class="fas fa-list"></i>
                                 </a>
                                 <a href="/tester/update/@obj.Id" class="btn btn-warning mx-2">
                                     <i class="fas fa-edit"></i>
@@ -63,48 +67,7 @@
                                 </button>
                             </div>
                         </td>
-                        <td class="text-center">
-                            <div class="w075 btn-group" role="group">
-                                @if (obj.Stage == null)
-                                {
-                                    <button @onclick=@(()=>Accessories(obj.Id)) class="btn btn-success mx-2">
-                                        <i class="fa-solid fa-user-tie"></i> Accessories
-                                    </button>
-                                }
-
-                                @if (obj.Stage == Stages.Init)
-                                {
-                                    <a asp-controller="SInit" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-1 disabled">
-                                        <i class="fa-solid fa-user-tie"></i>Tester
-                                    </a>
-                                }
-                                @if (obj.Stage == Stages.Tester)
-                                {
-                                    <a asp-controller="STester" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-info mx-1 disabled">
-                                        <i class="fa-solid fa-user-tie"></i> Analyser
-                                    </a>
-                                }
-                                @*@if (obj.Stage == Stages.Analyser)
-                                {
-                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-warning mx-1 disabled">
-                                        <i class="fa-solid fa-user-tie"></i> Calculate
-                                    </a>
-                                }
-                                @if (obj.Stage == Stages.Calculate)
-                                {
-                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-info mx-1 disabled">
-                                        <i class="fa-solid fa-user-tie"></i> Analyser
-                                    </a>
-                                }
-                                @if (obj.Stage == Stages.Result)
-                                {
-                                    <a asp-controller="SAnalуzer" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-2">
-                                        <i class="fa-solid fa-user-tie"></i> Edit Result
-                                    </a>
-                                }*@
-
-                            </div>
-                        </td>
+                        
                     </tr>
             }
             </tbody>

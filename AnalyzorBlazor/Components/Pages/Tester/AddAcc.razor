@@ -1,0 +1,144 @@
+﻿@page "/tester/addacc/{id:int}"
+@inject IDeviceService deviceService
+@inject IComponentService compService
+@inject IJSRuntime js
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+
+
+<h3>Device</h3>
+<EditForm Model="Device" OnValidSubmit="HandleDeviceAccessories">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="col-4">
+            <fieldset disabled="true">
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="Name">Name</label>
+                    </div>
+                    <div class="col-8">
+                        <InputText @bind-Value="Device.Name" class="form-control" />
+                        <ValidationMessage For="@(() => Device.Name)" />
+                    </div>
+
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="TotalCount">Quantity</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.TotalCount" class="form-control" />
+                        <ValidationMessage For="@(() => Device.TotalCount)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="CreateT">Create Time By Tester</label>
+                    </div>
+                    <div class="col-8">
+                        <InputDate @bind-Value="Device.CreateT" class="form-control"></InputDate>
+                        <ValidationMessage For="@(() => Device.CreateT)" />
+                    </div>
+                </div>
+                @if (Device.UpdateT != null)
+                {
+                    <div class="form-group row p-1">
+                        <div class="col-4">
+                            <label for="UpdateT">Last Update Time by Tester</label>
+                        </div>
+                        <div class="col-8">
+                            <InputDate @bind-Value="Device.UpdateT" class="form-control"></InputDate>
+                            <ValidationMessage For="@(() => Device.UpdateT)" />
+                        </div>
+                    </div>
+                }
+            </fieldset>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Other Comments</label>
+                </div>
+                <div class="col-8">
+                    <InputTextArea @bind-Value="Device.OtherComments" class="form-control"></InputTextArea>
+                    <ValidationMessage For="@(() => Device.OtherComments)" />
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <h3>Device Accessories</h3>
+            <div class="form-group row p-1">
+                <div class="col-1"> </div>
+                <div class="col-3"><label>Name</label></div>
+                <div class="col-1"><label>Price</label></div>
+                <div class="col-1"><label>Q-ty</label></div>
+            </div>
+            @foreach (var t in CompList)
+            {
+                <div class="form-check">
+                    <div class="form-group row p-1">
+                        <div class="col-1">
+                            <InputCheckbox @bind-Value="@t.Visible"></InputCheckbox>
+                        </div>
+                        <div class="col-3">
+                            <label for="@t.Name">"@t.Name <span style="font-size: xx-small">(@t.Id)</span></label>
+                        </div>
+                        <div class="col-1">
+                            <InputNumber @bind-Value="t.Price" class="form-control" />
+                            <ValidationMessage For="@(() => t.Price)" />
+                        </div>
+                        <div class="col-1">
+                            <InputNumber @bind-Value="t.Time" class="form-control" />
+                            <ValidationMessage For="@(() => t.Time)" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-3">
+            <br />
+            <button class="btn btn-primary" type="submit">
+                <span class="oi oi-pencil"></span>
+                Update Device
+            </button>
+            <button @onclick="BackToList" class="btn btn-outline-secondary">
+                <span class="oi oi-media-skip-backward"></span>
+                Back To List
+            </button>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Device Device = new();
+    private List<DeviceComponent> AccList = new();
+    private List<Component> CompList = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var deviceResponse = await deviceService.GetForUpdate(id);
+        if (deviceResponse.Success)
+        {
+            Device = deviceResponse.Data;
+        }
+        CompList = await compService.Get();
+    }
+    private async Task HandleDeviceAccessories()
+    {
+        var response = await deviceService.Edit(id, Device);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+
+    private void BackToList()
+    {
+        navManager.NavigateTo("/tester/");
+    }
+
+}
