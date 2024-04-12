@@ -6,7 +6,7 @@
 @rendermode InteractiveServer
 
 
-<h3>Device</h3>
+<h4>Add Device Other Comment</h4>
 <EditForm Model="Device" OnValidSubmit="HandleDeviceAccessories">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -65,14 +65,14 @@
             </div>
         </div>
         <div class="col-8">
-            <h3>Device Accessories</h3>
+            <h4>Add Device Accessories</h4>
             <div class="form-group row p-1">
                 <div class="col-1"> </div>
                 <div class="col-3"><label>Name</label></div>
                 <div class="col-1"><label>Price</label></div>
                 <div class="col-1"><label>Q-ty</label></div>
             </div>
-            @foreach (var t in CompList)
+            @foreach (var t in CompReadOnlyDtoList)
             {
                 <div class="form-check">
                     <div class="form-group row p-1">
@@ -82,13 +82,13 @@
                         <div class="col-3">
                             <label for="@t.Name">"@t.Name <span style="font-size: xx-small">(@t.Id)</span></label>
                         </div>
-                        <div class="col-1">
+                        <div class="col-2">
                             <InputNumber @bind-Value="t.Price" class="form-control" />
                             <ValidationMessage For="@(() => t.Price)" />
                         </div>
-                        <div class="col-1">
-                            <InputNumber @bind-Value="t.Time" class="form-control" />
-                            <ValidationMessage For="@(() => t.Time)" />
+                        <div class="col-2">
+                            <InputNumber @bind-Value="t.Qty" class="form-control" />
+                            <ValidationMessage For="@(() => t.Qty)" />
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
     <div class="row">
         <div class="offset-3">
             <br />
-            <button class="btn btn-primary" type="submit">
+            <button @onclick="HandleDeviceAccessories" class="btn btn-primary" type="submit">
                 <span class="oi oi-pencil"></span>
                 Update Device
             </button>
@@ -116,20 +116,20 @@
     public int id { get; set; }
     private Device Device = new();
     private List<DeviceComponent> AccList = new();
-    private List<Component> CompList = new();
+    private List<CompReadOnlyDto> CompReadOnlyDtoList = new();
 
     protected async override Task OnInitializedAsync()
     {
-        var deviceResponse = await deviceService.GetForUpdate(id);
+        var deviceResponse = await deviceService.Get(id);
         if (deviceResponse.Success)
         {
             Device = deviceResponse.Data;
         }
-        CompList = await compService.Get();
+        CompReadOnlyDtoList = await compService.GetAll();
     }
     private async Task HandleDeviceAccessories()
     {
-        var response = await deviceService.Edit(id, Device);
+        var response = await deviceService.EditAcc(id, Device, CompReadOnlyDtoList);
         if (response.Success)
         {
             BackToList();

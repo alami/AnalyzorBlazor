@@ -1,6 +1,7 @@
 ﻿using AnalyzerBlasor.Data;
 using AnalyzerBlasor.Services.Base;
 using AnalyzorBlazor.Models;
+using AnalyzorBlazor.Models.Dto;
 
 namespace AnalyzorBlazor.Services
 {
@@ -15,6 +16,22 @@ namespace AnalyzorBlazor.Services
         {
             List<Component> objList = _db.Component.Where(u=>u.Type==ComponentType.Accessories||u.Type==ComponentType.Parts).ToList();
             return objList;
+        }
+        public async Task<List<CompReadOnlyDto>> GetAll()
+        {
+            List<Component> objList = _db.Component.Where(u=>u.Type==ComponentType.Accessories||u.Type==ComponentType.Parts).ToList();
+            List<CompReadOnlyDto> CompReadOnlyDtoList = new();
+            foreach (var item in objList)
+            {
+                CompReadOnlyDtoList.Add(new CompReadOnlyDto()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Price = item.Price,
+                    Qty = item.Time
+                });
+            }
+            return CompReadOnlyDtoList;
         }
         public async Task<Responses<Component>> Get(int id)
         {

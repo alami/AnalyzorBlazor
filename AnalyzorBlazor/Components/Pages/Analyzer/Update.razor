@@ -240,7 +240,7 @@
     }
     private async void GoToEdit()
     {
-        var response = await deviceService.AEdit(id, Device);
+        var response = await deviceService.Edit(id, Device);
         if (response.Success)
         {
             BackToList();

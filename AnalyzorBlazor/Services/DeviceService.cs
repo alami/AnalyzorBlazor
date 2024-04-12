@@ -5,6 +5,8 @@ using Azure;
 using AnalyzerBlasor.Services.Base;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.EntityFrameworkCore;
+using System;
+using AnalyzorBlazor.Models.Dto;
 
 
 namespace AnalyzorBlazor.Services
@@ -139,27 +141,52 @@ namespace AnalyzorBlazor.Services
             }
             return responses;
         }
-        public async Task<Responses<int>> AEdit(int id, Device device)
-        {
-            Responses<int> responses = new();
-            try
-            {
-                if (device.CreateA==null) device.CreateA = DateTime.Now;
-                _db.Device.Update(device);
-                _db.SaveChanges();
-                responses.Success = true;
-            }
-            catch (Exception ex)
-            {
-                responses.Success = false;
-                responses.Message = $"/analyzer/edit/{id} Exception {ex}";
-            }
-            return responses;
-        }
+
         public async Task<List<DeviceComponent>> GetDevComp(int id, ComponentType type)
         {
             List<DeviceComponent> objList = _db.DeviceComponent.Where(u=>u.DeviceId==id&&u.Type==type).ToList();
             return objList;
+        }
+        public async Task<Responses<int>> EditAcc(int id, Device Device, List<CompReadOnlyDto> AccList)
+        {
+            Responses<int> responses = new();
+            try
+            {
+                Device.Stage = Stages.Tester;
+                //device.OtherComments = Device.OtherComments;
+                Device.UpdateT = DateTime.Now;
+                _db.Device.Update(Device);
+
+                List<DeviceComponent> OldAccList =
+                    _db.DeviceComponent.Where(u=>u.DeviceId==Device.Id && u.Type == ComponentType.Accessories && u.Stage== Stages.Tester).ToList();
+                if (OldAccList.Count>1) _db.DeviceComponent.RemoveRange(OldAccList);
+
+                for (int i = 0; i < AccList.Count(); i++)
+                {
+                    if (AccList[i].Visible)
+                    {
+                        DeviceComponent deviceComponent = new DeviceComponent()
+                        {
+                            DeviceId = Device.Id,
+                            ComponentId = AccList[i].Id,
+                            Type = ComponentType.Accessories, // stageTesterVM.AccessoriesList[i].Type,
+                            Value = AccList[i].Price,
+                            Qty = AccList[i].Qty,
+                            Stage = Stages.Tester
+                        };
+                        _db.DeviceComponent.Add(deviceComponent);
+                    }
+                }
+                _db.SaveChanges();
+                responses.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"/Tester/edit/{id} Exception {ex}";
+            }
+            return responses;
         }
 
     }
