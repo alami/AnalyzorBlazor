@@ -91,6 +91,12 @@
                     @if (Acc.Count > 0)
                     {
                         <h3>Device Accessories </h3>
+                        <div class="form-group row p-1">                            
+                            <div class="col-4"><label>Name</label></div>
+                            <div class="col-2"><label>Price</label></div>
+                            <div class="col-2"><label>Q-ty</label></div>
+                        </div>
+
                         @foreach (var t in Acc)
                         {
                             <div class="form-group row p-1">
@@ -101,8 +107,11 @@
                                     }
                                     <label>@compName <span style="font-size:x-small">(@componentId)</span></label>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-2">
                                     <label>@t.Value</label>
+                                </div>
+                                <div class="col-2">
+                                    <label>@t.Qty</label>
                                 </div>
                             </div>
                         }
@@ -115,6 +124,10 @@
         <button @onclick="GoToEdit" class="btn btn-warning">
             <span class="oi oi-pencil"></span>
             Edit Device
+        </button>
+        <button @onclick="GoToAddAcc" class="btn btn-warning">
+            <span class="oi oi-pencil"></span>
+            Add Accessories
         </button>
         <button @onclick="BackToList" class="btn btn-outline-secondary">
             <span class="oi oi-media-skip-backward"></span>
@@ -142,6 +155,10 @@
     private void GoToEdit()
     {
         navManager.NavigateTo($"/tester/update/{Device.Id}");
+    }
+    private void GoToAddAcc()
+    {
+        navManager.NavigateTo($"/tester/addacc/{Device.Id}");
     }
     private void BackToList()
     {

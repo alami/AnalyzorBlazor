@@ -1,5 +1,6 @@
 using AnalyzerBlasor.Data;
 using AnalyzorBlazor.Components;
+using AnalyzorBlazor.Configurations;
 using AnalyzorBlazor.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IDeviceService, DeviceService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IComponentService, ComponentService>();
 
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 var app = builder.Build();
 

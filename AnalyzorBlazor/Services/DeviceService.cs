@@ -159,7 +159,7 @@ namespace AnalyzorBlazor.Services
 
                 List<DeviceComponent> OldAccList =
                     _db.DeviceComponent.Where(u=>u.DeviceId==Device.Id && u.Type == ComponentType.Accessories && u.Stage== Stages.Tester).ToList();
-                if (OldAccList.Count>1) _db.DeviceComponent.RemoveRange(OldAccList);
+                if (OldAccList.Count>0) _db.DeviceComponent.RemoveRange(OldAccList);
 
                 for (int i = 0; i < AccList.Count(); i++)
                 {

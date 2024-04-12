@@ -2,15 +2,18 @@
 using AnalyzerBlasor.Services.Base;
 using AnalyzorBlazor.Models;
 using AnalyzorBlazor.Models.Dto;
+using AutoMapper;
 
 namespace AnalyzorBlazor.Services
 {
     public class ComponentService : IComponentService
     {
         private readonly ApplicationDbContext _db;
-        public ComponentService(ApplicationDbContext db)
+        private readonly IMapper mapper;
+        public ComponentService(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            this.mapper = mapper;
         }
         public async Task<List<Component>> Get()
         {
@@ -23,13 +26,9 @@ namespace AnalyzorBlazor.Services
             List<CompReadOnlyDto> CompReadOnlyDtoList = new();
             foreach (var item in objList)
             {
-                CompReadOnlyDtoList.Add(new CompReadOnlyDto()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Price = item.Price,
-                    Qty = item.Time
-                });
+                CompReadOnlyDto comp = new ();
+                comp = mapper.Map<CompReadOnlyDto>(item);
+                CompReadOnlyDtoList.Add(comp);
             }
             return CompReadOnlyDtoList;
         }
