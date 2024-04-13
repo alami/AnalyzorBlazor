@@ -15,6 +15,7 @@ namespace AnalyzorBlazor.Services
         Task<Responses<int>> Delete(int id);
         Task<List<DeviceComponent>> GetDevComp(int id, ComponentType type);
         Task<Responses<int>> EditAcc(int id, Device device, List<CompReadOnlyDto> AccList);
+        Task<Responses<int>> EditComp(int id, Device device, List<CompReadOnlyDto> CompList, Stages stage, ComponentType compType);
 
     }
 }

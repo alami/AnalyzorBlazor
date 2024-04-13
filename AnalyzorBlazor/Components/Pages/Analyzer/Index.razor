@@ -17,19 +17,20 @@
         <table class="table table-bordered table-striped" style="width:100%">
             <thead>
                 <tr style="text-align: center">
-                    <th>Device Name</th>
-                    <th>Qty laptops</th>
-                    <th>Template Name</th>
-                    <th>Tester Time</th>
-                    <th>Serial Number</th>
-                    <th>Model</th>
-                    <th>Model Name</th>
-                    <th>Comments T</th>
-                    <th>Other Comments T</th>
-                    <th>Creation Date by T</th>
-                    <th>Updated Date by T</th>
-                    <th>Action</th>
+                    <th rowspan="2">Device Name</th>
+                    <th rowspan="2">Qty</th>
+                    <th rowspan="2">Template</th>
+                    <th rowspan="2">Model Name</th>
+                    <th colspan="7">Tester</th>
+                    <th rowspan="2">Action</th>
                 </tr>
+                    <th>Time</th>
+                    <th>S/N</th>
+                    <th>Model</th>
+                    <th>Comments</th>
+                    <th>Other Comments</th>
+                    <th>Creation Date</th>
+                    <th>Updated Date</th>
                 <tr>
                 </tr>
             </thead>
@@ -43,18 +44,24 @@
                         </td>
                         <td width=7%>@obj.TotalCount</td>
                         <td width=7%>@obj.Template</td>
+                        <td width=7%>@obj.ModelName</td>
                         <td width=7%>@obj.TesterTime</td>
                         <td width=7%>@obj.SN</td>
                         <td width=7%>@obj.Model</td>
-                        <td width=7%>@obj.ModelName</td>
                         <td width=7%>@obj.Comments</td>
                         <td width=7%>@obj.OtherComments</td>
                         <td width=7%>@obj.CreateT</td>
                         <td width=7%>@obj.UpdateT</td>
                         <td>
                             <div class="w075 btn-group" role="group">
-                                <a href="/analyzer/detailall/@obj.Id" class="btn btn-warning mx-2">
+                                <a href="/analyzer/detailparts/@obj.Id" class="btn btn-warning mx-2">
                                     <i class="fas fa-database"></i>
+                                </a>
+                                <a href="/analyzer/addparts/@obj.Id" class="btn btn-info mx-2">
+                                    <i class="fas fa-list"></i>
+                                </a>
+                                <a href="/analyzer/update/@obj.Id" class="btn btn-warning mx-2">
+                                    <i class="fas fa-edit"></i>
                                 </a>
                                 @if (obj.Stage == null)
                                 {
@@ -62,9 +69,6 @@
                                         <i class="fas fa-list"></i><span style="font-size:xx-small;padding:0;margin:0">Parts</span>
                                     </button>
                                 }
-                                <a href="/analyzer/update/@obj.Id" class="btn btn-warning mx-2">
-                                    <i class="fas fa-edit"></i>
-                                </a>
                             </div>
                         </td>
 

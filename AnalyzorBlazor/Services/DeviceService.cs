@@ -188,6 +188,52 @@ namespace AnalyzorBlazor.Services
             }
             return responses;
         }
+        public async Task<Responses<int>> EditComp(int id, Device Device, List<CompReadOnlyDto> CompList, Stages stage, ComponentType compType)
+        {
+            Responses<int> responses = new();            
+            try
+            {
+                Device.Stage = stage;
+                if (stage == Stages.Tester)
+                {
+                    Device.UpdateT = DateTime.Now;//[Device.OtherComments]
+                }
+          
+                List<DeviceComponent> OldList =
+                    _db.DeviceComponent.Where(u=>u.DeviceId==Device.Id && u.Type == compType && u.Stage== stage).ToList();
+                if (OldList.Count>0) _db.DeviceComponent.RemoveRange(OldList);
+
+                for (int i = 0; i < CompList.Count(); i++)
+                {
+                    if (CompList[i].Visible)
+                    {
+                        DeviceComponent deviceComponent = new DeviceComponent()
+                        {
+                            DeviceId = Device.Id,
+                            ComponentId = CompList[i].Id,
+                            Type = compType, // stageTesterVM.AccessoriesList[i].Type,
+                            Value = CompList[i].Price,
+                            Qty = CompList[i].Qty,
+                            Stage = stage
+                        };
+                        _db.DeviceComponent.Add(deviceComponent);
+                    }
+                }
+                _db.SaveChanges();
+                responses.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                if(stage == Stages.Tester)
+                    responses.Message = $"/tester/addacc/{id} : Exception {ex.Message}";
+                else if (stage == Stages.Tester)
+                    responses.Message = $"/analyser/addparts/{id} : Exception {ex.Message}";
+                else responses.Message = $"Uknown '{stage}' : Exception {ex.Message}";
+            }
+            return responses;
+        }
 
     }
 }

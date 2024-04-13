@@ -1,4 +1,4 @@
-﻿@page "/analyzer/detailall/{id:int}"
+﻿@page "/analyzer/detailparts/{id:int}"
 @inject IDeviceService deviceService
 @inject IComponentService compService
 @inject ITemplateService templateService
@@ -222,14 +222,6 @@
 
             </fieldset>
             <br />
-            <button @onclick="GoToEdit" class="btn btn-warning">
-                <span class="oi oi-pencil"></span>
-                Edit Device
-            </button>
-            <button @onclick="BackToList" class="btn btn-outline-secondary">
-                <span class="oi oi-media-skip-backward"></span>
-                Back To List
-            </button>
         </EditForm>
     </div>
     <div class="col-6">
@@ -250,8 +242,11 @@
                         }
                         <label>@compName <span style="font-size:x-small">(@componentId)</span></label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-2">
                         <label>@t.Value</label>
+                    </div>
+                    <div class="col-2">
+                        <label>@t.Qty</label>
                     </div>
                 </div>
             }
@@ -285,6 +280,18 @@
             }
         }
         <hr />
+        <button @onclick="GoToEdit" class="btn btn-warning">
+            <span class="oi oi-pencil"></span>
+            Edit Device
+        </button>
+        <button @onclick="GoToAddParts" class="btn btn-info">
+            <span class="oi oi-pencil"></span>
+            Parts
+        </button>
+        <button @onclick="BackToList" class="btn btn-outline-secondary">
+            <span class="oi oi-media-skip-backward"></span>
+            Back To List
+        </button>
         <button @onclick="Calculate" class="btn btn-success">
             <span class="oi oi-media-skip-backward"></span>
             Calculate
@@ -362,6 +369,11 @@
     {
         navManager.NavigateTo($"/analyzer/update/{Device.Id}");
     }
+    private void GoToAddParts()
+    {
+        navManager.NavigateTo($"/analyzer/addparts/{Device.Id}");
+    }
+
     private void BackToList()
     {
         navManager.NavigateTo("/analyzer/");
