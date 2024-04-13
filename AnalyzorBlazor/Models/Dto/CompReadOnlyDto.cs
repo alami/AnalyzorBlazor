@@ -6,7 +6,9 @@ namespace AnalyzorBlazor.Models.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        [Range(1, int.MaxValue)]
         public int? Price { get; set; }
+        [Range(1, int.MaxValue)]
         public int? Qty { get; set; }
         public bool Visible { get; set; }
     }

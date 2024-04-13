@@ -112,10 +112,10 @@
 
 
 @code {
-    [Parameter]
-    public int id { get; set; }
+        [Parameter]
+        public int id { get; set; }
     private Device Device = new();
-    private List<DeviceComponent> AccList = new();
+    private List<DeviceComponent> Acc = new();
     private List<CompReadOnlyDto> CompReadOnlyDtoList = new();
 
     protected async override Task OnInitializedAsync()
@@ -126,6 +126,18 @@
             Device = deviceResponse.Data;
         }
         CompReadOnlyDtoList = await compService.GetAll();
+        Acc = await deviceService.GetDevComp(id, ComponentType.Accessories);
+        CompReadOnlyDto tmp;
+        foreach (DeviceComponent t in Acc)
+        {            
+            if ( (tmp = CompReadOnlyDtoList.FirstOrDefault(u => u.Id == t.ComponentId)) != null)
+            {
+                tmp.Visible = true;
+                tmp.Price = t.Value;
+                tmp.Qty = t.Qty;
+            }
+
+        }
     }
     private async Task HandleDeviceAccessories()
     {
