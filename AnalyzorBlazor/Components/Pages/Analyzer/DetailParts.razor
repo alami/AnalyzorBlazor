@@ -316,14 +316,14 @@
                 <th>G</th>
             </tr>
             <tr>
-                <td><span style="font-size:x-small">(32)</span><b>For 1 hold unit</b></td>
+                <th>For 1 hold unit<span style="font-size:x-small">/32</span></th>
                 <td style="background-color: yellow">@B32</td>
                 <td></td>
                 <td style="background-color: yellow">(@F32mod)</td>
                 <td style="background-color: yellow">@G32</td>
             </tr>
             <tr>
-                <td><span style="font-size:small">(33)</span><b>Total All</b></td>
+                <th>Total All<span style="font-size:x-small">/33</span></th>
                 <td style="background-color: orange">@B33</td>
                 <td style="background-color: lightblue">@C33</td>
                 <td style="background-color: orange">(@F33mod)</td>
@@ -331,7 +331,7 @@
 
             </tr>
             <tr>
-                <td><span style="font-size:small">(36)</span><b>Results,%</b></td>
+                <th>Results,%<span style="font-size:x-small">/36</span></th>
                 <td style="background-color: lightgreen">@B36</td>
             </tr>
             <tr>
@@ -422,7 +422,7 @@
         G33mod = (G33 < 0) ? -G33 : G33;
 
         Conclusion = "non answer";
-        BG = (B33 - G33) / B33;
+        BG = Math.Round((B33 - G33) / B33,2);
         if (B33 < 0 && G33 < 0)
         {
             Device.Сonclusion = Сonclusions.BuyOnEconomics;
