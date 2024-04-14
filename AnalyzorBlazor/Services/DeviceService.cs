@@ -81,8 +81,11 @@ namespace AnalyzorBlazor.Services
             try
             {
                 Template template = _db.Template.FirstOrDefault (u=>u.Name==device.Template);
+                device.PersntLost = template.PersntLost;
+                device.PersntResult = template.PersntResult;
                 device.Shipping_price = template.Shipping_price;
-                device.TesterTime = template.Tester_time;
+                if (device.TotalCount == null) device.TotalCount = 1;
+                if (device.TesterTime == null) device.TesterTime = template.Tester_time;
                 device.Tester_time_price = template.Tester_time_price;
                 device.Receiver_time = template.Receiver_time;
                 device.Receiver_time_price = template.Receiver_time_price;
