@@ -96,7 +96,11 @@ namespace AnalyzorBlazor.Models
         [Display(Name = "Disasembler time price")]
         public int? Disasembler_time_price { get; set; }
 
-        [Display(Name = "On hold/nit-F32")] 
+        [Display(Name = "Analyzer time")]
+        public int Analyzer_time { get; set; }
+        [Display(Name = "Analyzer time price")]
+        public int Analyzer_time_price { get; set; }
+        [Display(Name = "On hold/unit-F32")] 
         public float? F32 { get; set; }
         [Display(Name = "On hold for all-F33")] 
         public float? F33 { get; set; }

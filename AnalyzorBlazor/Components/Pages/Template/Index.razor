@@ -21,16 +21,19 @@
             <thead>
                 <tr>
                     <th rowspan="2">Template Name</th>
-                    <th rowspan="2">Comment</th>
+                    <th rowspan="2">Stage</th>
+                    <th rowspan="2">Visible</th>
                     <th rowspan="2">% Lost</th>
                     <th rowspan="2">% Result</th>
                     <th rowspan="2">Shipping price</th>
-                    <th colspan="2">Tester </th>                    
+                    <th colspan="2">Tester </th>
                     <th colspan="2">Receiver</th>
                     <th colspan="2">Lister</th>
                     <th colspan="2">Fullfilment</th>
                     <th rowspan="2">Market fees</th>
                     <th colspan="2">Dissassembly</th>
+                    <th colspan="2">Analyzer</th>
+                    <th rowspan="2">Comment</th>
                     <th rowspan="2">Actions</th>
                 </tr>
                 <tr>                    
@@ -44,9 +47,8 @@
                     <th>Time Price</th>
                     <th>Time</th>
                     <th>Time Price</th>
-                    @*<th>Visible</th>*@
-                    @*<th>Stage</th>*@
-                    @*<th>DeviceId</th>*@
+                    <th>Time</th>
+                    <th>Time Price</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,7 +56,8 @@
                 {
                     <tr>
                         <td width=7%>@obj.Name</td>
-                        <td width=7%>@obj.Comment</td>
+                        <td width=0%>@obj.Stage</td>
+                        <td width=7%>@obj.Visible</td>
                         <td width=7%>@obj.PersntLost</td>
                         <td width=7%>@obj.PersntResult</td>
                         <td width=7%>@obj.Shipping_price</td>
@@ -69,9 +72,9 @@
                         <td width=7%>@obj.Market_fees</td>
                         <td width=7%>@obj.Dissassembly_time</td>
                         <td width=7%>@obj.Disasembler_time_price</td>
-                        @*<td width=7%>@obj.Visible</td>*@
-                        @* <td width=0%>@obj.Stage</td>
-        <td width=7%>@obj.DeviceId</td> *@
+                        <td width=7%>@obj.Analyzer_time</td>
+                        <td width=7%>@obj.Analyzer_time_price</td>
+                        <td width=7%>@obj.Comment</td>
                         <td>
                             <div class="w075 btn-group" role="group">
                                 <a href="/template/detail/@obj.Id" class="btn btn-warning mx-2">

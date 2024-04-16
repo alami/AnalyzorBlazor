@@ -22,6 +22,28 @@
             </div>
             <div class="form-group row p-1">
                 <div class="col-4">
+                    <label for="Stage">Select Template Stage</label>
+                </div>
+                <div class="col-8">
+                    <InputSelect @bind-Value="Template.Stage" class="form-select" id="stage">
+                        <option value="@Stages.Tester">For Tester</option>
+                        <option value="@Stages.Analyser">For Analyzer</option>
+                    </InputSelect>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Visible">Visible</label>
+                </div>
+                <div class="col-8">
+                    <InputSelect @bind-Value="Template.Visible" class="form-select" id="stage">
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </InputSelect>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
                     <label for="Comment">Comment</label>
                 </div>
                 <div class="col-8">
@@ -160,6 +182,24 @@
                     <ValidationMessage For="@(() => Template.Disasembler_time_price)" />
                 </div>
             </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Analyzer_time">Analyzer time</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Template.Analyzer_time" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Analyzer_time)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label for="Analyzer_time_price">Analyzer time price</label>
+                </div>
+                <div class="col-8">
+                    <InputNumber @bind-Value="Template.Analyzer_time_price" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Analyzer_time_price)" />
+                </div>
+            </div>
         </div>
     </div>
 
@@ -183,7 +223,7 @@
         Lister_time = 45, Lister_time_price = 50,
         Fullfilment_time = 25, Fullfilment_time_price = 50,
         Dissassembly_time = 90, Disasembler_time_price = 50,
-        Market_fees = 15, Shipping_price=50
+        Market_fees = 15, Shipping_price=50, Stage=Stages.Tester, Visible=true
     };
 
     private async Task HandleTemplateCreate()
