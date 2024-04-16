@@ -49,9 +49,5 @@ namespace AnalyzorBlazor.Models
         public bool Visible { get; set; } = true;
         public Stages Stage { get; set; } = Stages.Origin;
 
-        public int? DeviceId { get; set; } = null;
-        [ForeignKey("DeviceId")]
-        public virtual Device Device { get; set; }
-
     }
 }

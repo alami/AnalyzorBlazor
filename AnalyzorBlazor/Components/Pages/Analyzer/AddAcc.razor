@@ -1,12 +1,13 @@
-﻿@page "/analyzer/addparts/{id:int}"
+﻿@page "/analyzer/addacc/{id:int}"
 @inject IDeviceService deviceService
 @inject IComponentService compService
 @inject IJSRuntime js
 @inject NavigationManager navManager
 @rendermode InteractiveServer
 
-<h3>Device</h3>
-<EditForm Model="Device" OnValidSubmit="HandleDeviceParts">
+
+<h4>Add Device Other Comment</h4>
+<EditForm Model="Device" OnValidSubmit="HandleDeviceAccessories">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="row">
@@ -20,6 +21,7 @@
                         <InputText @bind-Value="Device.Name" class="form-control" />
                         <ValidationMessage For="@(() => Device.Name)" />
                     </div>
+
                 </div>
                 <div class="form-group row p-1">
                     <div class="col-4">
@@ -30,14 +32,44 @@
                         <ValidationMessage For="@(() => Device.TotalCount)" />
                     </div>
                 </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="CreateT">Create Time By Tester</label>
+                    </div>
+                    <div class="col-8">
+                        <InputDate @bind-Value="Device.CreateT" class="form-control"></InputDate>
+                        <ValidationMessage For="@(() => Device.CreateT)" />
+                    </div>
+                </div>
+                @if (Device.UpdateT != null)
+                {
+                    <div class="form-group row p-1">
+                        <div class="col-4">
+                            <label for="UpdateT">Last Update Time by Tester</label>
+                        </div>
+                        <div class="col-8">
+                            <InputDate @bind-Value="Device.UpdateT" class="form-control"></InputDate>
+                            <ValidationMessage For="@(() => Device.UpdateT)" />
+                        </div>
+                    </div>
+                }
             </fieldset>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label>Other Comments</label>
+                </div>
+                <div class="col-8">
+                    <InputTextArea @bind-Value="Device.OtherComments" class="form-control"></InputTextArea>
+                    <ValidationMessage For="@(() => Device.OtherComments)" />
+                </div>
+            </div>
         </div>
         <div class="col-8">
-            <h4>Add Device Parts</h4>
+            <h4>Add Device Accessories</h4>
             <div class="form-group row p-1">
                 <div class="col-1"> </div>
-                <div class="col-3 p-1"><label>Name</label></div>
-                <div class="col-2 p-1"><label>Price</label></div>
+                <div class="col-3"><label>Name</label></div>
+                <div class="col-2"><label>Price</label></div>
                 <div class="col-2"><label>Q-ty</label></div>
                 <div class="col-2"><label>Comment</label></div>
             </div>
@@ -60,8 +92,8 @@
                             <ValidationMessage For="@(() => t.Qty)" />
                         </div>
                         <div class="col-2">
-                            <InputText @bind-Value="t.Comment" class="form-control" />
-                            <ValidationMessage For="@(() => t.Qty)" />
+                            <InputText @bind-Value="t.Comment" class="form-control" ></InputText>
+                            <ValidationMessage For="@(() => t.Comment)" />
                         </div>
                     </div>
                 </div>
@@ -71,7 +103,7 @@
     <div class="row">
         <div class="offset-3">
             <br />
-            <button @onclick="HandleDeviceParts" class="btn btn-primary" type="submit">
+            <button @onclick="HandleDeviceAccessories" class="btn btn-primary" type="submit">
                 <span class="oi oi-pencil"></span>
                 Update Device
             </button>
@@ -81,27 +113,29 @@
             </button>
         </div>
     </div>
-
 </EditForm>
+
+
 @code {
-    [Parameter]
-    public int id { get; set; }
+        [Parameter]
+        public int id { get; set; }
     private Device Device = new();
-    private List<DeviceComponent> Parts = new();
+    private List<DeviceComponent> Acc = new();
     private List<CompReadOnlyDto> CompReadOnlyDtoList = new();
+
     protected async override Task OnInitializedAsync()
     {
-        var deviceResponse = await deviceService.GetForUpdate(id);
+        var deviceResponse = await deviceService.Get(id);
         if (deviceResponse.Success)
         {
             Device = deviceResponse.Data;
         }
         CompReadOnlyDtoList = await compService.GetAll();
-        Parts = await deviceService.GetDevComp(id, ComponentType.Parts);
+        Acc = await deviceService.GetDevComp(id, ComponentType.Accessories);
         CompReadOnlyDto tmp;
-        foreach (DeviceComponent t in Parts)
-        {
-            if ((tmp = CompReadOnlyDtoList.FirstOrDefault(u => u.Id == t.ComponentId)) != null)
+        foreach (DeviceComponent t in Acc)
+        {            
+            if ( (tmp = CompReadOnlyDtoList.FirstOrDefault(u => u.Id == t.ComponentId)) != null)
             {
                 tmp.Visible = true;
                 tmp.Price = t.Value;
@@ -109,9 +143,9 @@
             }
         }
     }
-    private async Task HandleDeviceParts()
+    private async Task HandleDeviceAccessories()
     {
-        var response = await deviceService.EditComp(id, Device, CompReadOnlyDtoList, Stages.Analyser, ComponentType.Parts);
+        var response = await deviceService.EditAcc(id, Device, CompReadOnlyDtoList);
         if (response.Success)
         {
             BackToList();

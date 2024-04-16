@@ -10,6 +10,7 @@ namespace AnalyzorBlazor.Models.Dto
         public int? Price { get; set; }
         [Range(1, int.MaxValue)]
         public int? Qty { get; set; }
+        public string? Comment { get; set; }
         public bool Visible { get; set; }
     }
 }

@@ -310,28 +310,28 @@
         <table class="table">
             <tr>
                 <th style="text-align:center; width:30%">Calculate</th>
-                <th style="width:20%">B</th>
-                <th>C</th>
-                <th>F</th>
-                <th>G</th>
+                <th style="width:20%">OnHold <span style="font-size:small">(B)</span></th>
+                <th><span style="font-size:small">(C)</span></th>
+                <th>OnParts <span style="font-size:small">(F)</span></th>
+                <th><span style="font-size:small">(G)</span></th>
             </tr>
             <tr>
                 <th>For 1 hold unit<span style="font-size:x-small">/32</span></th>
                 <td style="background-color: yellow">@B32</td>
                 <td></td>
-                <td style="background-color: yellow">(@F32mod)</td>
+                <td style="background-color: yellow">@F32 (@F32mod)</td>
                 <td style="background-color: yellow">@G32</td>
             </tr>
             <tr>
                 <th>Total All<span style="font-size:x-small">/33</span></th>
                 <td style="background-color: orange">@B33</td>
                 <td style="background-color: lightblue">@C33</td>
-                <td style="background-color: orange">(@F33mod)</td>
-                <td style="background-color: lightblue">(@G33mod)</td>
+                <td style="background-color: orange">@F33 (@F33mod)</td>
+                <td style="background-color: lightblue">@G33 (@G33mod)</td>
 
             </tr>
             <tr>
-                <th>Results,%<span style="font-size:x-small">/36</span></th>
+                <th>Diff.Results,%<span style="font-size:x-small">/36</span></th>
                 <td style="background-color: lightgreen">@B36</td>
             </tr>
             <tr>
@@ -423,7 +423,16 @@
 
         Conclusion = "non answer";
         BG = Math.Round((B33 - G33) / B33,2);
-        if (B33 < 0 && G33 < 0)
+
+        if (B33 > 0 && G33 < 0) {
+            Device.Сonclusion = Сonclusions.ForOnHold;
+            Conclusion = "OnHold";
+        }
+        else if (B33 < 0 && G33 > 0) {
+            Device.Сonclusion = Сonclusions.ForOnHold;
+            Conclusion = "OnParts";
+        }
+        else if (B33 < 0 && G33 < 0)
         {
             Device.Сonclusion = Сonclusions.BuyOnEconomics;
             Conclusion = "Buy On Economics";
@@ -431,12 +440,12 @@
         else if (BG > -10 && BG < 10)
         {
             Device.Сonclusion = Сonclusions.For5050;
-            Conclusion = "For 50 / 50";
+            Conclusion = "50 / 50";
         }
         else if (B33 > G33)
         {
             Device.Сonclusion = Сonclusions.ForParts;
-            Conclusion = "ForParts";
+            Conclusion = "OnParts";
         }
         else if (B33 > G33)
         {
