@@ -21,11 +21,9 @@
             <thead>
                 <tr>
                     <th rowspan="2">Template Name</th>
-                    <th rowspan="2">Stage</th>
-                    <th rowspan="2">Visible</th>
                     <th rowspan="2">% Lost</th>
                     <th rowspan="2">% Result</th>
-                    <th rowspan="2">Shipping price</th>
+                    <th rowspan="2">Ship. price</th>
                     <th colspan="2">Tester </th>
                     <th colspan="2">Receiver</th>
                     <th colspan="2">Lister</th>
@@ -33,7 +31,6 @@
                     <th rowspan="2">Market fees</th>
                     <th colspan="2">Dissassembly</th>
                     <th colspan="2">Analyzer</th>
-                    <th rowspan="2">Comment</th>
                     <th rowspan="2">Actions</th>
                 </tr>
                 <tr>                    
@@ -55,26 +52,23 @@
                 @foreach (var obj in Model)
                 {
                     <tr>
-                        <td width=7%>@obj.Name</td>
-                        <td width=0%>@obj.Stage</td>
-                        <td width=7%>@obj.Visible</td>
+                        <td width=20% align="right">@obj.Name <span style="font-size:x-small">OnHold<br />OnPart</span></td>
                         <td width=7%>@obj.PersntLost</td>
                         <td width=7%>@obj.PersntResult</td>
-                        <td width=7%>@obj.Shipping_price</td>
-                        <td width=7%>@obj.Tester_time</td>
-                        <td width=7%>@obj.Tester_time_price</td>
-                        <td width=7%>@obj.Receiver_time</td>
-                        <td width=7%>@obj.Receiver_time_price</td>
-                        <td width=7%>@obj.Lister_time</td>
-                        <td width=7%>@obj.Lister_time_price</td>
-                        <td width=7%>@obj.Fullfilment_time</td>
-                        <td width=7%>@obj.Fullfilment_time_price</td>
-                        <td width=7%>@obj.Market_fees</td>
-                        <td width=7%>@obj.Dissassembly_time</td>
-                        <td width=7%>@obj.Disasembler_time_price</td>
-                        <td width=7%>@obj.Analyzer_time</td>
-                        <td width=7%>@obj.Analyzer_time_price</td>
-                        <td width=7%>@obj.Comment</td>
+                        <td width=7%>@obj.Shipping_price<br />@obj.Shipping_price</td>
+                        <td width=7%>@obj.Tester_time<br />@obj.Tester_time2</td>
+                        <td width=7%>@obj.Tester_time_price<br />@obj.Tester_time_price2</td>
+                        <td width=7%>@obj.Receiver_time<br />@obj.Receiver_time2</td>
+                        <td width=7%>@obj.Receiver_time_price<br />@obj.Receiver_time_price2</td>
+                        <td width=7%>@obj.Lister_time<br />@obj.Lister_time2</td>
+                        <td width=7%>@obj.Lister_time_price<br />@obj.Lister_time_price2</td>
+                        <td width=7%>@obj.Fullfilment_time<br />@obj.Fullfilment_time2</td>
+                        <td width=7%>@obj.Fullfilment_time_price<br />@obj.Fullfilment_time_price2</td>
+                        <td width=7%>@obj.Market_fees<br />@obj.Market_fees2</td>
+                        <td width=7%><br />@obj.Dissassembly_time</td>
+                        <td width=7%><br />@obj.Disasembler_time_price</td>
+                        <td width=7%><br />@obj.Analyzer_time</td>
+                        <td width=7%><br />@obj.Analyzer_time_price</td>
                         <td>
                             <div class="w075 btn-group" role="group">
                                 <a href="/template/detail/@obj.Id" class="btn btn-warning mx-2">

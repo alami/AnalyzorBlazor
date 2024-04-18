@@ -128,7 +128,7 @@
             if ( (tmp = CompReadOnlyDtoList.FirstOrDefault(u => u.Id == t.ComponentId)) != null)
             {
                 tmp.Visible = true;
-                tmp.Price = t.Value;
+                //tmp.Price = t.Value;
                 tmp.Qty = t.Qty;
             }
         }

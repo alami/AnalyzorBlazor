@@ -22,6 +22,8 @@ namespace AnalyzorBlazor.Models
 
         [Display(Name = "Shipping price")]
         public int Shipping_price { get; set; } = 50;
+        [Display(Name = "Shipping price")]
+        public int Shipping_price2 { get; set; } = 50;
         [Display(Name = "Tester time")]
         public int Tester_time { get; set; } = 150;
         [Display(Name = "Tester time price")]
@@ -41,6 +43,25 @@ namespace AnalyzorBlazor.Models
         [Display(Name = "Market fees")]
         public int Market_fees { get; set; }
         [Display(Name = "Dissassembly time")]
+
+        public int Tester_time2 { get; set; } = 150;
+        [Display(Name = "Tester time price")]
+        public int Tester_time_price2 { get; set; }
+        [Display(Name = "Receiver time")]
+        public int Receiver_time2 { get; set; }
+        [Display(Name = "Receiver time price")]
+        public int Receiver_time_price2 { get; set; }
+        [Display(Name = "Lister time")]
+        public int Lister_time2 { get; set; }
+        [Display(Name = "Lister time price")]
+        public int Lister_time_price2 { get; set; }
+        [Display(Name = "Fullfilment time")]
+        public int Fullfilment_time2 { get; set; }
+        [Display(Name = "Fullfilment time price")]
+        public int Fullfilment_time_price2 { get; set; }
+        [Display(Name = "Market fees")]
+        public int Market_fees2 { get; set; }
+
         public int Dissassembly_time { get; set; }
         [Display(Name = "Disasembler time price")]
         public int Disasembler_time_price { get; set; }

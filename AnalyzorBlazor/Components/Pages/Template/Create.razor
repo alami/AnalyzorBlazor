@@ -12,194 +12,224 @@
         <div class="col-8">
 
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
+                    <label for="Name"><b>Field Name</b></label>
+                </div>
+                <div class="col-3">
+                    <label for="Name"><b>On Hold</b></label>
+                </div>
+                <div class="col-3">
+                    <label for="Name"><b>On Parts</b></label>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-6">
                     <label for="Name">Name</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputText @bind-Value="Template.Name" class="form-control" />
                     <ValidationMessage For="@(() => Template.Name)" />
                 </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Stage">Select Template Stage</label>
-                </div>
-                <div class="col-8">
-                    <InputSelect @bind-Value="Template.Stage" class="form-select" id="stage">
-                        <option value="@Stages.Tester">For Tester</option>
-                        <option value="@Stages.Analyser">For Analyzer</option>
-                    </InputSelect>
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Visible">Visible</label>
-                </div>
-                <div class="col-8">
-                    <InputSelect @bind-Value="Template.Visible" class="form-select" id="stage">
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                    </InputSelect>
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
-                    <label for="Comment">Comment</label>
-                </div>
-                <div class="col-8">
-                    <InputTextArea @bind-Value="Template.Comment" class="form-control"></InputTextArea>
-                    <ValidationMessage For="@(() => Template.Comment)" />
-                </div>
-            </div>
-            <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label>% Lost</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.PersntLost" class="form-control" />
                     <ValidationMessage For="@(() => Template.PersntLost)" />
                 </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="PersntResult">% Result</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.PersntResult" class="form-control" />
                     <ValidationMessage For="@(() => Template.PersntResult)" />
                 </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Shipping_price">Shipping price</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Shipping_price" class="form-control" />
                     <ValidationMessage For="@(() => Template.Shipping_price)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Shipping_price2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Shipping_price2)" />
+                </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Tester_time">Tester time</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Tester_time" class="form-control" />
                     <ValidationMessage For="@(() => Template.Tester_time)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Tester_time2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Tester_time2)" />
+                </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Tester_time_price">Tester time price</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Tester_time_price" class="form-control" />
                     <ValidationMessage For="@(() => Template.Tester_time_price)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Tester_time_price2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Tester_time_price2)" />
+                </div>
             </div>
 
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Receiver _time">Receiver  time</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Receiver_time" class="form-control" />
                     <ValidationMessage For="@(() => Template.Receiver_time)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Receiver_time2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Receiver_time2)" />
+                </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Receiver_time_price">Receiver time price</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Receiver_time_price" class="form-control" />
                     <ValidationMessage For="@(() => Template.Receiver_time_price)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Receiver_time_price2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Receiver_time_price2)" />
+                </div>
             </div>
 
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Lister_time">Lister time</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Lister_time" class="form-control" />
                     <ValidationMessage For="@(() => Template.Lister_time)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Lister_time2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Lister_time2)" />
+                </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Lister_time_price">Lister time price</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Lister_time_price" class="form-control" />
                     <ValidationMessage For="@(() => Template.Lister_time_price)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Lister_time_price2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Lister_time_price2)" />
+                </div>
             </div>
 
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Fullfilment_time">Fullfilment time</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Fullfilment_time" class="form-control" />
                     <ValidationMessage For="@(() => Template.Fullfilment_time)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Fullfilment_time2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Fullfilment_time2)" />
+                </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Fullfilment_time_price">Fullfilment time price</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Fullfilment_time_price" class="form-control" />
                     <ValidationMessage For="@(() => Template.Fullfilment_time_price)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Fullfilment_time_price2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Fullfilment_time_price2)" />
+                </div>
             </div>
 
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Market_fees">Market_fees</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <InputNumber @bind-Value="Template.Market_fees" class="form-control" />
                     <ValidationMessage For="@(() => Template.Market_fees)" />
                 </div>
+                <div class="col-3">
+                    <InputNumber @bind-Value="Template.Market_fees2" class="form-control" />
+                    <ValidationMessage For="@(() => Template.Market_fees2)" />
+                </div>
             </div>
 
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Dissassembly_time">Dissassembly time</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3 offset-3">
                     <InputNumber @bind-Value="Template.Dissassembly_time" class="form-control" />
                     <ValidationMessage For="@(() => Template.Dissassembly_time)" />
                 </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Disasembler_time_price">Disasembler time price</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3 offset-3">
                     <InputNumber @bind-Value="Template.Disasembler_time_price" class="form-control" />
                     <ValidationMessage For="@(() => Template.Disasembler_time_price)" />
                 </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Analyzer_time">Analyzer time</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3 offset-3">
                     <InputNumber @bind-Value="Template.Analyzer_time" class="form-control" />
                     <ValidationMessage For="@(() => Template.Analyzer_time)" />
                 </div>
             </div>
             <div class="form-group row p-1">
-                <div class="col-4">
+                <div class="col-6">
                     <label for="Analyzer_time_price">Analyzer time price</label>
                 </div>
-                <div class="col-8">
+                <div class="col-3  offset-3">
                     <InputNumber @bind-Value="Template.Analyzer_time_price" class="form-control" />
                     <ValidationMessage For="@(() => Template.Analyzer_time_price)" />
                 </div>
             </div>
+            <div class="form-group row p-1">
+                <div class="col-6">
+                    <label for="Comment">Comment</label>
+                </div>
+                <div class="col-6">
+                    <InputTextArea @bind-Value="Template.Comment" class="form-control"></InputTextArea>
+                    <ValidationMessage For="@(() => Template.Comment)" />
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -218,12 +248,18 @@
 @code {
     private Template Template = new() {
         PersntLost = 12.5F, PersntResult = 10,
+        Market_fees = 15, Shipping_price = 50,
         Tester_time = 150, Tester_time_price = 50,
         Receiver_time = 30, Receiver_time_price = 50,
         Lister_time = 45, Lister_time_price = 50,
         Fullfilment_time = 25, Fullfilment_time_price = 50,
         Dissassembly_time = 90, Disasembler_time_price = 50,
-        Market_fees = 15, Shipping_price=50, Stage=Stages.Tester, Visible=true
+        Tester_time2 = 150, Tester_time_price2 = 50,
+        Receiver_time2 = 30, Receiver_time_price2 = 50,
+        Lister_time2 = 45, Lister_time_price2 = 50,
+        Fullfilment_time2 = 15, Fullfilment_time_price2 = 50,
+        Market_fees2 = 15,Shipping_price2 = 50,
+        //Stage =Stages.Tester, Visible=true
     };
 
     private async Task HandleTemplateCreate()

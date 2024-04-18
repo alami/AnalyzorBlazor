@@ -75,6 +75,33 @@ namespace AnalyzorBlazor.Services
             }
             return responses;
         }
+        public async Task<Responses<int>> Next(int id, Stages stage)
+        {
+            Responses<int> responses = new();
+            try
+            {
+                var device = await _db.Device.FindAsync(id);
+                if (device == null)
+                {
+                    responses.Success = false;
+                    responses.Message = $"Device/Next/{id} Not found";
+                }
+                else
+                {
+                    device.UpdateT = DateTime.Now;
+                    device.Stage = Stages.Analyser;
+                    _db.SaveChanges();
+                    responses.Success = true;
+                    responses.Message = $"Device {id} sent to Analyzor";
+                }
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"Device/Next/{id} Exception {ex.Message}";
+            }
+            return responses;
+        }
         public async Task<Responses<int>> Create(Device device)
         {
             Responses<int> responses = new();            
@@ -155,7 +182,7 @@ namespace AnalyzorBlazor.Services
             Responses<int> responses = new();
             try
             {
-                Device.Stage = Stages.Tester;
+                //Device.Stage = Stages.Tester;
                 //device.OtherComments = Device.OtherComments;
                 Device.UpdateT = DateTime.Now;
                 _db.Device.Update(Device);

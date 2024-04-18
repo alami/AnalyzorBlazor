@@ -40,8 +40,10 @@
                 {
                     <tr>
                         <td width=7%>
-                            @obj.Name
-                            <div style="font-size:small"> &nbsp; @obj.Id:@obj.Stage</div>
+                            <a href="/tester/detailacc/@obj.Id" class="btn btn-success mx-2">
+                                @obj.Name
+                                <div style="font-size:small"> &nbsp; @obj.Id:@obj.Stage</div>
+                            </a>
                         </td>
                         <td width=7%>@obj.TotalCount</td>
                         <td width=7%>@obj.Template</td>
@@ -52,22 +54,25 @@
                         <td width=7%>@obj.CreateT</td>
                         <td width=7%>@obj.UpdateT</td>
                         <td>
-                            <div class="w075 btn-group" role="group">
-                                <a href="/tester/detailacc/@obj.Id" class="btn btn-warning mx-2">
-                                    <i class="fas fa-database"></i>
-                                </a>
-                                <a href="/tester/addacc/@obj.Id" class="btn btn-success mx-2">
-                                    <i class="fas fa-list"></i>
-                                </a>
-                                <a href="/tester/update/@obj.Id" class="btn btn-warning mx-2">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button @onclick=@(()=>Delete(obj.Id)) class="btn btn-danger mx-2">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
+                        @if (obj.Stage == null || obj.Stage == Stages.Tester)
+                            {
+                                <div class="w075 btn-group" role="group">
+                                    <a href="/tester/update/@obj.Id" class="btn btn-warning mx-2">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="/tester/addacc/@obj.Id" class="btn btn-success mx-2">
+                                        <i class="fas fa-list"></i>
+                                    </a>
+                                    <button @onclick=@(() => Next(obj.Id)) class="btn btn-primary mx-2">
+                                        <i class="fas fa-database"></i> To Analyzer
+                                    </button>
+                                    <button @onclick=@(() => Delete(obj.Id)) class="btn btn-danger mx-2">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            }
                         </td>
-                        
+
                     </tr>
             }
             </tbody>
@@ -88,6 +93,19 @@
         if (conform)
         {
             var responses = await deviceService.Delete(deviceId);
+            if (responses.Success)
+            {
+                await OnInitializedAsync();
+            }
+        }
+    }
+    private async Task Next(int deviceId)
+    {
+        var device = Model.First(q => q.Id == deviceId);
+        var conform = await js.InvokeAsync<bool>("confirm", $"Are You Sure Want to Send {device.Name} to Analyzer?");
+        if (conform)
+        {
+            var responses = await deviceService.Next(deviceId, Stages.Analyser);
             if (responses.Success)
             {
                 await OnInitializedAsync();

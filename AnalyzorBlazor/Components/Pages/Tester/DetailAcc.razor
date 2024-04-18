@@ -91,7 +91,7 @@
                     @if (Acc.Count > 0)
                     {
                         <h3>Device Accessories </h3>
-                        <div class="form-group row p-1">                            
+                        <div class="form-group row p-1">
                             <div class="col-4"><label>Name</label></div>
                             <div class="col-2"><label>Price</label></div>
                             <div class="col-2"><label>Q-ty</label></div>
@@ -115,20 +115,50 @@
                                 </div>
                             </div>
                         }
+                        @if (PartsList.Count > 0)
+                        {
+                            <h3>Device Parts </h3>
+                            <div class="form-group row p-1">
+                                <div class="col-4"><label>Name</label></div>
+                                <div class="col-2"><label>Price</label></div>
+                                <div class="col-2"><label>Q-ty</label></div>
+                            </div>
+                            @foreach (var t in PartsList)
+                            {
+                                <div class="form-group row p-1">
+                                    <div class="col-4">
+                                        @{
+                                            var componentId = t.ComponentId;
+                                            var compName = CompList.FirstOrDefault(u => u.Id == componentId).Name;
+                                        }
+                                        <label>@compName <span style="font-size:x-small">(@componentId)</span></label>
+                                    </div>
+                                    <div class="col-2">
+                                        <label>@t.Value</label>
+                                    </div>
+                                    <div class="col-2">
+                                        <label>@t.Qty</label>
+                                    </div>
+                                </div>
+                            }
+                        }
                     }
                 </div>
             </div>
         </fieldset>
 
         <br />
+        @if (Device.Stage == null || Device.Stage == Stages.Tester)
+        {
         <button @onclick="GoToEdit" class="btn btn-warning">
             <span class="oi oi-pencil"></span>
             Edit Device
         </button>
-        <button @onclick="GoToAddAcc" class="btn btn-warning">
+        <button @onclick="GoToAddAcc" class="btn btn-success">
             <span class="oi oi-pencil"></span>
             Accessories
         </button>
+        }
         <button @onclick="BackToList" class="btn btn-outline-secondary">
             <span class="oi oi-media-skip-backward"></span>
             Back To List
@@ -141,6 +171,7 @@
     private Device Device = new Device();
     private List<DeviceComponent> Acc = new();
     private List<Component> CompList = new();
+    private List<DeviceComponent> PartsList = new();
     protected async override Task OnInitializedAsync()
     {
         var responses = await deviceService.Get(id);
@@ -149,6 +180,7 @@
             Device = responses.Data;
         }
         Acc = await deviceService.GetDevComp(id, ComponentType.Accessories);
+        PartsList = await deviceService.GetDevComp(id, ComponentType.Parts);
         CompList = await compService.Get();
 
     }
