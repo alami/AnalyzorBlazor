@@ -54,22 +54,34 @@
                         <td width=7%>@obj.UpdateT</td>
                         <td>
                             <div class="w075 btn-group" role="group">
+                                @if (obj.Stage == Stages.Analyser)
+                                {
+                                    <a href="/analyzer/addacc/@obj.Id" class="btn btn-success mx-2">
+                                        <i class="fas fa-list"></i>
+                                    </a>
+                                    <a href="/analyzer/addparts/@obj.Id" class="btn btn-info mx-2">
+                                        <i class="fas fa-list"></i>
+                                    </a>
+                                    <a href="/analyzer/update/@obj.Id" class="btn btn-warning mx-2">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (obj.Stage == null)
+                                    {
+                                        <button @onclick=@(()=>Parts(obj.Id)) class="btn btn-info mx-2">
+                                            <i class="fas fa-list"></i><span style="font-size:xx-small;padding:0;margin:0">Parts</span>
+                                        </button>
+                                    }
+                                    <button @onclick=@(() => Next(obj.Id)) class="btn btn-primary mx-2">
+                                        <i class="fas fa-database"></i> To Rezult
+                                    </button>
+                                }
                                 <a href="/analyzer/detailparts/@obj.Id" class="btn btn-warning mx-2">
                                     <i class="fas fa-database"></i>
                                 </a>
-                                <a href="/analyzer/addacc/@obj.Id" class="btn btn-success mx-2">
-                                    <i class="fas fa-list"></i>
-                                </a>
-                                <a href="/analyzer/addparts/@obj.Id" class="btn btn-info mx-2">
-                                    <i class="fas fa-list"></i>
-                                </a>
-                                <a href="/analyzer/update/@obj.Id" class="btn btn-warning mx-2">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                @if (obj.Stage == null)
+                                @if (obj.Stage == Stages.Result)
                                 {
-                                    <button @onclick=@(()=>Parts(obj.Id)) class="btn btn-info mx-2">
-                                        <i class="fas fa-list"></i><span style="font-size:xx-small;padding:0;margin:0">Parts</span>
+                                    <button class="btn btn-info mx-2">
+                                        <i class="fas fa-database"></i> @obj.Сonclusion
                                     </button>
                                 }
                             </div>
@@ -101,4 +113,18 @@
     {
         navManager.NavigateTo($"/analyzer/calculate/{deviceId}");
     }
+    private async Task Next(int deviceId)
+    {
+        var device = Model.First(q => q.Id == deviceId);
+        var conform = await js.InvokeAsync<bool>("confirm", $"Are You Sure Want to Send {device.Name} Rezult?");
+        if (conform)
+        {
+            var responses = await deviceService.Next(deviceId, Stages.Result);
+            if (responses.Success)
+            {
+                await OnInitializedAsync();
+            }
+        }
+    }
+
 }

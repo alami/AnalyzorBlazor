@@ -88,8 +88,16 @@ namespace AnalyzorBlazor.Services
                 }
                 else
                 {
+                    if (stage == Stages.Analyser)
+                    {                        
                     device.UpdateT = DateTime.Now;
                     device.Stage = Stages.Analyser;
+                    } else if (stage == Stages.Result)
+                    {
+                        device.UpdateA = DateTime.Now;
+                        device.Stage = Stages.Result;
+                    }
+
                     _db.SaveChanges();
                     responses.Success = true;
                     responses.Message = $"Device {id} sent to Analyzor";
@@ -154,6 +162,24 @@ namespace AnalyzorBlazor.Services
             }
             return responses;
         }
+        public async Task<Responses<int>> EditByA(int id, Device device)
+        {
+            Responses<int> responses = new();
+            try
+            {
+                device.UpdateA = DateTime.Now;
+                _db.Device.Update(device);
+                _db.SaveChanges();
+                responses.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"/analyzer/edit/{id} Exception {ex}";
+            }
+            return responses;
+        }
         public async Task<Responses<Device>> GetForUpdate(int id)
         {
             Responses<Device> responses = new();
@@ -188,7 +214,8 @@ namespace AnalyzorBlazor.Services
                 _db.Device.Update(Device);
 
                 List<DeviceComponent> OldAccList =
-                    _db.DeviceComponent.Where(u=>u.DeviceId==Device.Id && u.Type == ComponentType.Accessories && u.Stage== Stages.Tester).ToList();
+                    _db.DeviceComponent.Where(u=>u.DeviceId==Device.Id && u.Type == ComponentType.Accessories).ToList();
+                                                        // && u.Stage== Stages.Tester
                 if (OldAccList.Count>0) _db.DeviceComponent.RemoveRange(OldAccList);
 
                 for (int i = 0; i < AccList.Count(); i++)
@@ -202,7 +229,51 @@ namespace AnalyzorBlazor.Services
                             Type = ComponentType.Accessories, // stageTesterVM.AccessoriesList[i].Type,
                             Value = AccList[i].Price,
                             Qty = AccList[i].Qty,
-                            Stage = Stages.Tester
+                            Comment = AccList[i].Comment,
+                            //Stage = Stages.Tester
+                        };
+                        _db.DeviceComponent.Add(deviceComponent);
+                    }
+                }
+                _db.SaveChanges();
+                responses.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                responses.Success = false;
+                responses.Message = $"/Tester/edit/{id} Exception {ex}";
+            }
+            return responses;
+        }
+        public async Task<Responses<int>> EditAccByA(int id, Device Device, List<CompReadOnlyDto> AccList)
+        {
+            Responses<int> responses = new();
+            try
+            {
+                //Device.Stage = Stages.Tester;
+                //device.OtherComments = Device.OtherComments;
+                Device.UpdateT = DateTime.Now;
+                _db.Device.Update(Device);
+
+                List<DeviceComponent> OldAccList =
+                    _db.DeviceComponent.Where(u=>u.DeviceId==Device.Id && u.Type == ComponentType.Accessories).ToList();
+                                                                        // && u.Stage== Stages.Tester
+                if (OldAccList.Count>0) _db.DeviceComponent.RemoveRange(OldAccList);
+
+                for (int i = 0; i < AccList.Count(); i++)
+                {
+                    if (AccList[i].Visible)
+                    {
+                        DeviceComponent deviceComponent = new DeviceComponent()
+                        {
+                            DeviceId = Device.Id,
+                            ComponentId = AccList[i].Id,
+                            Type = ComponentType.Accessories, // stageTesterVM.AccessoriesList[i].Type,
+                            Value = AccList[i].Price,
+                            Qty = AccList[i].Qty,
+                            Comment = AccList[i].Comment,
+                            //Stage = Stages.Analyser
                         };
                         _db.DeviceComponent.Add(deviceComponent);
                     }
@@ -227,10 +298,14 @@ namespace AnalyzorBlazor.Services
                 if (stage == Stages.Tester)
                 {
                     Device.UpdateT = DateTime.Now;//[Device.OtherComments]
+                } else
+                {
+                    Device.UpdateA = DateTime.Now;//[Device.OtherComments]
                 }
           
                 List<DeviceComponent> OldList =
-                    _db.DeviceComponent.Where(u=>u.DeviceId==Device.Id && u.Type == compType && u.Stage== stage).ToList();
+                    _db.DeviceComponent.Where(u=>u.DeviceId==Device.Id && u.Type == compType).ToList();
+                                                // && u.Stage== stage
                 if (OldList.Count>0) _db.DeviceComponent.RemoveRange(OldList);
 
                 for (int i = 0; i < CompList.Count(); i++)
@@ -244,7 +319,8 @@ namespace AnalyzorBlazor.Services
                             Type = compType, // stageTesterVM.AccessoriesList[i].Type,
                             Value = CompList[i].Price,
                             Qty = CompList[i].Qty,
-                            Stage = stage
+                            Comment = CompList[i].Comment,
+                            //Stage = stage
                         };
                         _db.DeviceComponent.Add(deviceComponent);
                     }

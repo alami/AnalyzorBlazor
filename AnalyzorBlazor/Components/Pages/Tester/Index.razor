@@ -54,9 +54,9 @@
                         <td width=7%>@obj.CreateT</td>
                         <td width=7%>@obj.UpdateT</td>
                         <td>
-                        @if (obj.Stage == null || obj.Stage == Stages.Tester)
-                            {
-                                <div class="w075 btn-group" role="group">
+                            <div class="w075 btn-group" role="group">
+                                @if (obj.Stage == null || obj.Stage == Stages.Tester)
+                                {
                                     <a href="/tester/update/@obj.Id" class="btn btn-warning mx-2">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -69,8 +69,18 @@
                                     <button @onclick=@(() => Delete(obj.Id)) class="btn btn-danger mx-2">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
-                                </div>
-                            }
+                                }
+                                <a href="/tester/detailacc/@obj.Id" class="btn btn-success mx-2">
+                                    <i class="fas fa-database"></i>
+                                </a>
+                                @if (obj.Stage == Stages.Result)
+                                {
+                                    <button class="btn btn-info mx-2">
+                                        <i class="fas fa-database"></i> @obj.Сonclusion
+                                    </button>
+                                }
+
+                            </div>
                         </td>
 
                     </tr>

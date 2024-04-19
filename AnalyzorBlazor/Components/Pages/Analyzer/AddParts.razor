@@ -61,7 +61,7 @@
                         </div>
                         <div class="col-2">
                             <InputText @bind-Value="t.Comment" class="form-control" />
-                            <ValidationMessage For="@(() => t.Qty)" />
+                            <ValidationMessage For="@(() => t.Comment)" />
                         </div>
                     </div>
                 </div>
@@ -89,6 +89,7 @@
     private Device Device = new();
     private List<DeviceComponent> Parts = new();
     private List<CompReadOnlyDto> CompReadOnlyDtoList = new();
+
     protected async override Task OnInitializedAsync()
     {
         var deviceResponse = await deviceService.GetForUpdate(id);
@@ -106,6 +107,7 @@
                 tmp.Visible = true;
                 tmp.Price = t.Value;
                 tmp.Qty = t.Qty;
+                tmp.Comment = t.Comment;
             }
         }
     }

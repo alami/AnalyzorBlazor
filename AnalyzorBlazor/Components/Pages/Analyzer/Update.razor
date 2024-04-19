@@ -58,11 +58,11 @@
             </div>
             <div class="form-group row p-1">
                 <div class="col-4">
-                    <label for="Tester_time_price">Tester_time_price</label>
+                    <label for="Analyzer_time">Analyzer time</label>
                 </div>
                 <div class="col-8">
-                    <InputNumber @bind-Value="Device.Tester_time_price" class="form-control" />
-                    <ValidationMessage For="@(() => Device.Tester_time_price)" />
+                    <InputNumber @bind-Value="Device.Analyzer_time" class="form-control" />
+                    <ValidationMessage For="@(() => Device.Analyzer_time)" />
                 </div>
             </div>
 
@@ -191,7 +191,7 @@
     }
     private async void GoToEdit()
     {
-        var response = await deviceService.Edit(id, Device);
+        var response = await deviceService.EditByA(id, Device);
         if (response.Success)
         {
             BackToList();
