@@ -347,14 +347,14 @@
     }
     private void InitTemplate ()
     {
-        job = new[] {
+        job0 = new[] {
 (double)Device.TesterTime / 60 * (double)template.Tester_time_price,       // 0 -tester
 (double)template.Receiver_time / 60 * (double)template.Receiver_time_price,  // 1-reciever
 (double)template.Lister_time / 60 * (double)template.Lister_time_price,      // 2-lister
 (double)template.Fullfilment_time / 60 * (double)template.Fullfilment_time_price, //3-fullfilment
-0,//(double)template.Dissassembly_time / 60 * (double)template.Disasembler_time_price,//4-disasembler
+(double)template.Dissassembly_time / 60 * (double)template.Disasembler_time_price,//4-disasembler
              };
-        job0 = new[] {
+        job = new[] {
 (double)Device.TesterTime / 60 * (double)template.Tester_time_price2,       // 0 -tester
 (double)template.Receiver_time2 / 60 * (double)template.Receiver_time_price2,  // 1-reciever
 (double)template.Lister_time2 / 60 * (double)template.Lister_time_price2,      // 2-lister
@@ -380,9 +380,10 @@
     private double fnB32()
     {
         if (Device.HoldUnit == null) return 0;
-        double b32 = (double)Device.HoldUnit;
-        b32 = b32 - CostOfAccessories() - template.Shipping_price - job0[0] - job0[1] - job0[2] - job0[3];
-        return b32 - (b32 / 100 * template.Market_fees);
+        double b32_1 =
+            (double)Device.HoldUnit - template.Shipping_price - CostOfAccessories()
+                  - job0[0] - job0[1] - job0[2] - job0[3];
+        return b32_1 - (b32_1 * template.Market_fees / 100);
     }
     private int QtyAllParts()
     {
