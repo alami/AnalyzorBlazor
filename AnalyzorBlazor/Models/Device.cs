@@ -47,14 +47,8 @@ namespace AnalyzorBlazor.Models
         [Range(1, int.MaxValue)]
         public int? TesterTime { get; set; }
 
-        [Display(Name = "% Lost")]        
-        public float? PersntLost { get; set; }
-
         [Display(Name = "Hold unit, $")]        
         public float? HoldUnit { get; set; }
-
-        [Display(Name = "% Result")]
-        public float? PersntResult { get; set; }
 
         [Display(Name = "Result for 1 hold unit-B32")]
         public float? Result { get; set; }
@@ -73,33 +67,8 @@ namespace AnalyzorBlazor.Models
         public Сonclusions? Сonclusion { get; set; }
         public Stages? Stage { get; set; }
 
-        [Display(Name = "Shipping price")]
-        public int? Shipping_price { get; set; }
-        [Display(Name = "Tester time price")]
-        public int? Tester_time_price { get; set; }
-        [Display(Name = "Receiver time")]
-        public int? Receiver_time { get; set; }
-        [Display(Name = "Receiver time price")]
-        public int? Receiver_time_price { get; set; }
-        [Display(Name = "Lister time")]
-        public int? Lister_time { get; set; }
-        [Display(Name = "Lister time price")]
-        public int? Lister_time_price { get; set; }
-        [Display(Name = "Fullfilment time")]
-        public int? Fullfilment_time { get; set; }
-        [Display(Name = "Fullfilment time price")]
-        public int? Fullfilment_time_price { get; set; }
-        [Display(Name = "Market fees")]
-        public int? Market_fees { get; set; }
-        [Display(Name = "Dissassembly time")]
-        public int? Dissassembly_time { get; set; }
-        [Display(Name = "Disasembler time price")]
-        public int? Disasembler_time_price { get; set; }
-
         [Display(Name = "Analyzer time")]
         public int Analyzer_time { get; set; }
-        [Display(Name = "Analyzer time price")]
-        public int Analyzer_time_price { get; set; }
         [Display(Name = "On hold/unit-F32")] 
         public float? F32 { get; set; }
         [Display(Name = "On hold for all-F33")] 

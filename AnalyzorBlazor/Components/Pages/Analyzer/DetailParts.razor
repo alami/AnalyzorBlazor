@@ -42,15 +42,6 @@
                 </div>
                 <div class="form-group row p-1">
                     <div class="col-4">
-                        <label for="Shipping_price">Shipping price</label>
-                    </div>
-                    <div class="col-8">
-                        <InputNumber @bind-Value="Device.Shipping_price" class="form-control" />
-                        <ValidationMessage For="@(() => Device.Shipping_price)" />
-                    </div>
-                </div>
-                <div class="form-group row p-1">
-                    <div class="col-4">
                         <label for="TesterTime">Tester Time</label>
                     </div>
                     <div class="col-8">
@@ -65,16 +56,6 @@
                     <div class="col-8">
                         <InputNumber @bind-Value="Device.Analyzer_time" class="form-control" />
                         <ValidationMessage For="@(() => Device.Analyzer_time)" />
-                    </div>
-                </div>
-
-                <div class="form-group row p-1">
-                    <div class="col-4">
-                        <label for="Market_fees">Market fees</label>
-                    </div>
-                    <div class="col-8">
-                        <InputNumber @bind-Value="Device.Market_fees" class="form-control" />
-                        <ValidationMessage For="@(() => Device.Market_fees)" />
                     </div>
                 </div>
 
@@ -335,38 +316,26 @@
     {
         navManager.NavigateTo($"/analyzer/addparts/{Device.Id}");
     }
-
     private void BackToList()
     {
         navManager.NavigateTo("/analyzer/");
     }
-
     private void Calculate ()
     {
-        job = new[] {
-(double)Device.TesterTime.Value / 60 * (double)Device.Tester_time_price.Value,       // 0 -tester
-(double)Device.Receiver_time.Value / 60 * (double)Device.Receiver_time_price.Value,  // 1-reciever
-(double)Device.Lister_time.Value / 60 * (double)Device.Lister_time_price.Value,      // 2-lister
-(double)Device.Fullfilment_time.Value / 60 * (double)Device.Fullfilment_time_price.Value, //3-fullfilment
-(double)Device.Dissassembly_time.Value / 60 * (double)Device.Disasembler_time_price.Value,//4-disasembler
-             };
-
-        job0 = new[] {
-(double)template.Tester_time / 60 * (double)template.Tester_time_price,       // 0 -tester
-(double)template.Receiver_time / 60 * (double)template.Receiver_time_price,  // 1-reciever
-(double)template.Lister_time / 60 * (double)template.Lister_time_price,      // 2-lister
-(double)template.Fullfilment_time / 60 * (double)template.Fullfilment_time_price, //3-fullfilment
-(double)template.Dissassembly_time / 60 * (double)template.Disasembler_time_price,//4-disasembler
-             };
-
+        InitTemplate();
+        InitCells();
+        GetRezult();
+    }
+    private void InitCells ()
+    {
         B32 = Math.Round(fnB32(), 2);
         F32 = Math.Round(fnF32(), 2);
         G32 = Math.Round((job[1] + job[2]) * QtyOfParts(), 2);  // 1-reciever 2-lister;                                 
 
         B33 = Math.Round(B32 * Device.TotalCount.Value, 2);
-        C33 = Math.Round(B33 - (B33 / 100 * Device.PersntLost.Value), 2);
+        C33 = Math.Round(B33 - (B33 / 100 * template.PersntLost), 2);
         F33 = Math.Round((F32 * Device.TotalCount.Value) - G32, 2);
-        G33 = Math.Round(F33 - (F33 / 100 * Device.PersntLost.Value), 2);
+        G33 = Math.Round(F33 - (F33 / 100 * template.PersntLost), 2);
 
         B36 = Math.Round((G33 - C33) / C33 * 100, 2);
 
@@ -374,14 +343,81 @@
         F33mod = (F33 < 0) ? -F33 : F33;
         G33mod = (G33 < 0) ? -G33 : G33;
 
-        Conclusion = "non answer";
-        BG = Math.Round((B33 - G33) / B33,2);
+        BG = Math.Round((B33 - G33) / B33, 2);
+    }
+    private void InitTemplate ()
+    {
+        job = new[] {
+(double)Device.TesterTime / 60 * (double)template.Tester_time_price,       // 0 -tester
+(double)template.Receiver_time / 60 * (double)template.Receiver_time_price,  // 1-reciever
+(double)template.Lister_time / 60 * (double)template.Lister_time_price,      // 2-lister
+(double)template.Fullfilment_time / 60 * (double)template.Fullfilment_time_price, //3-fullfilment
+0,//(double)template.Dissassembly_time / 60 * (double)template.Disasembler_time_price,//4-disasembler
+             };
+        job0 = new[] {
+(double)Device.TesterTime / 60 * (double)template.Tester_time_price2,       // 0 -tester
+(double)template.Receiver_time2 / 60 * (double)template.Receiver_time_price2,  // 1-reciever
+(double)template.Lister_time2 / 60 * (double)template.Lister_time_price2,      // 2-lister
+(double)template.Fullfilment_time2 / 60 * (double)template.Fullfilment_time_price2, //3-fullfilment
+(double)template.Dissassembly_time / 60 * (double)template.Disasembler_time_price,//4-disasembler
+             };
+    }
 
-        if (B33 > 0 && G33 < 0) {
+    private double CostOfAccessories()
+    {
+        double sum = 0;
+        foreach (var item in AccList)
+            sum += (double)item.Value * ((item.Qty == null) ? 1 : (int)item.Qty);
+        return sum;
+    }
+    private double CostOfParts()
+    {
+        double sum = 0;
+        foreach (var item in PartsList)
+            sum += (double)item.Value * ((item.Qty == null) ? 1 : (int)item.Qty);
+        return sum;
+    }
+    private double fnB32()
+    {
+        if (Device.HoldUnit == null) return 0;
+        double b32 = (double)Device.HoldUnit;
+        b32 = b32 - CostOfAccessories() - template.Shipping_price - job0[0] - job0[1] - job0[2] - job0[3];
+        return b32 - (b32 / 100 * template.Market_fees);
+    }
+    private int QtyAllParts()
+    {
+        int qty = 0;
+        foreach (var item in PartsList)
+            qty += ((item.Qty == null) ? 1 : (int)item.Qty);
+        return qty;
+    }
+    private double fnF32()
+    {
+        double f32 = CostOfParts();
+        f32 -= (double)QtyAllParts() * template.Shipping_price;
+        f32 -= job[0];
+        f32 -= job[3] * QtyAllParts();
+        f32 -= job[4];
+        double market_fees = (double)template.Market_fees;
+        return f32 - (f32 / 100 * market_fees);
+    }
+    private int QtyOfParts()
+    {
+        int qty = 0;
+        foreach (var item in PartsList)
+            qty += ((item.Qty == null) ? 1 : (int)item.Qty);
+        return qty;
+    }
+    private void GetRezult()
+    {
+
+        if (B33 > 0 && G33 < 0)
+        {
             Device.Сonclusion = Сonclusions.ForOnHold;
             Conclusion = "OnHold";
         }
-        else if (B33 < 0 && G33 > 0) {
+        else if (B33 < 0 && G33 > 0)
+        {
             Device.Сonclusion = Сonclusions.ForOnHold;
             Conclusion = "OnParts";
         }
@@ -404,54 +440,11 @@
         {
             Device.Сonclusion = Сonclusions.ForOnHold;
             Conclusion = "ForOnHold";
+        } else
+        {
+            Device.Сonclusion = null;
+            Conclusion = "non answer";
         }
-
-    }
-
-    private double CostOfAccessories()
-    {
-        double sum = 0;
-        foreach (var item in AccList)
-            sum += (double)item.Value * ((item.Qty == null) ? 1 : (int)item.Qty);
-        return sum;
-    }
-    private double CostOfParts()
-    {
-        double sum = 0;
-        foreach (var item in PartsList)
-            sum += (double)item.Value * ((item.Qty == null) ? 1 : (int)item.Qty);
-        return sum;
-    }
-    private double fnB32()
-    {
-        if (Device.HoldUnit == null) return 0;
-        double b32 = (double)Device.HoldUnit;
-        b32 = b32 - CostOfAccessories() - Device.Shipping_price.Value - job0[0] - job0[1] - job0[2] - job0[3];
-        return b32 - (b32 / 100 * Device.Market_fees.Value);
-    }
-    private int QtyAllParts()
-    {
-        int qty = 0;
-        foreach (var item in PartsList)
-            qty += ((item.Qty == null) ? 1 : (int)item.Qty);
-        return qty;
-    }
-    private double fnF32()
-    {
-        double f32 = CostOfParts();
-        f32 -= (double)QtyAllParts() * Device.Shipping_price.Value;
-        f32 -= job[0];
-        f32 -= job[3] * QtyAllParts();
-        f32 -= job[4];
-        double market_fees = (double)Device.Market_fees.Value;
-        return f32 - (f32 / 100 * market_fees);
-    }
-    private int QtyOfParts()
-    {
-        int qty = 0;
-        foreach (var item in PartsList)
-            qty += ((item.Qty == null) ? 1 : (int)item.Qty);
-        return qty;
     }
 
 }

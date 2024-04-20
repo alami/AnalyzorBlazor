@@ -204,6 +204,15 @@
             </div>
             <div class="form-group row p-1">
                 <div class="col-6">
+                    <label for="Analyzer_time">By On Economics</label>
+                </div>
+                <div class="col-3 offset-3">
+                    <InputNumber @bind-Value="Template.ByOnEconomics" class="form-control" />
+                    <ValidationMessage For="@(() => Template.ByOnEconomics)" />
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-6">
                     <label for="Analyzer_time">Analyzer time</label>
                 </div>
                 <div class="col-3 offset-3">

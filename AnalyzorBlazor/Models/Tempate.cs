@@ -69,6 +69,8 @@ namespace AnalyzorBlazor.Models
         public int Analyzer_time { get; set; }
         [Display(Name = "Analyzer time price")]
         public int Analyzer_time_price { get; set; }
+        [Display(Name = "By On Economics")]
+        public int ByOnEconomics { get; set; }
         [Display(Name = "Position in the list")]
         public int Pos { get; set; } = 1;
         public bool Visible { get; set; } = true;
