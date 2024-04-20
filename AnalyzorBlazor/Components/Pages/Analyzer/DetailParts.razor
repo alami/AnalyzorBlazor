@@ -253,15 +253,16 @@
                 <th>For 1 hold unit<span style="font-size:x-small">/32</span></th>
                 <td style="background-color: yellow">@B32</td>
                 <td></td>
-                <td style="background-color: yellow">@F32 (@F32mod)</td>
+                <td style="background-color: yellow">@F32 @F32mod
+                </td>
                 <td style="background-color: yellow">@G32</td>
             </tr>
             <tr>
                 <th>Total All<span style="font-size:x-small">/33</span></th>
                 <td style="background-color: orange">@B33</td>
                 <td style="background-color: lightblue">@C33</td>
-                <td style="background-color: orange">@F33 (@F33mod)</td>
-                <td style="background-color: lightblue">@G33 (@G33mod)</td>
+                <td style="background-color: orange">@F33 @F33mod</td>
+                <td style="background-color: lightblue">@G33 @G33mod</td>
 
             </tr>
             <tr>
@@ -284,11 +285,9 @@
     private List<DeviceComponent> AccList = new();
     private List<DeviceComponent> PartsList = new();
     private List<Component> CompList = new();
-    private double[] job;
-    private double[] job0;
-    private double C32, C33, B32, B33, B36, G32, G33, F32, F33;
-    private double C32mod, C33mod, B32mod, B33mod, G32mod, G33mod, F32mod, F33mod, BG;
-    private string Conclusion;
+    private double[] job0,job;  //OnHold, OnParts
+    private double C32, C33, B32, B33, B36, G32, G33, F32, F33, BG;
+    private string Conclusion, G33mod, F32mod, F33mod; //C32mod, C33mod, B32mod, B33mod, G32mod,
 
 
     protected async override Task OnInitializedAsync()
@@ -339,9 +338,9 @@
 
         B36 = Math.Round((G33 - C33) / C33 * 100, 2);
 
-        F32mod = (F32 < 0) ? -F32 : F32;
-        F33mod = (F33 < 0) ? -F33 : F33;
-        G33mod = (G33 < 0) ? -G33 : G33;
+        F32mod = (F32 < 0) ? "("+ -F32+")" : "";
+        F33mod = (F33 < 0) ? "(" + -F33 + ")" : "";
+        G33mod = (G33 < 0) ? "(" + -G33 + ")" : "";
 
         BG = Math.Round((B33 - G33) / B33, 2);
     }
