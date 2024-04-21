@@ -329,7 +329,7 @@
     {
         B32 = Math.Round(fnB32(), 2);
         F32 = Math.Round(fnF32(), 2);
-        G32 = Math.Round((job[1] + job[2]) * QtyOfParts(), 2);  // 1-reciever 2-lister;                                 
+        G32 = Math.Round((job[1] + job[2]) * QtyAllParts(), 2);  // 1-reciever 2-lister;                                 
 
         B33 = Math.Round(B32 * Device.TotalCount.Value, 2);
         C33 = Math.Round(B33 - (B33 / 100 * template.PersntLost), 2);
@@ -394,19 +394,12 @@
     private double fnF32()
     {
         double f32 = CostOfParts();
-        f32 -= (double)QtyAllParts() * template.Shipping_price;
+        f32 -= (double)QtyAllParts() * template.Shipping_price2;
         f32 -= job[0];
         f32 -= job[3] * QtyAllParts();
         f32 -= job[4];
-        double market_fees = (double)template.Market_fees;
+        double market_fees = (double)template.Market_fees2;
         return f32 - (f32 / 100 * market_fees);
-    }
-    private int QtyOfParts()
-    {
-        int qty = 0;
-        foreach (var item in PartsList)
-            qty += ((item.Qty == null) ? 1 : (int)item.Qty);
-        return qty;
     }
     private void GetRezult()
     {
