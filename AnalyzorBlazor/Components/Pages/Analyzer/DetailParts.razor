@@ -42,11 +42,20 @@
                 </div>
                 <div class="form-group row p-1">
                     <div class="col-4">
-                        <label for="TesterTime">Tester Time</label>
+                        <label for="TesterTime">Tester Time OnHold</label>
                     </div>
                     <div class="col-8">
                         <InputNumber @bind-Value="Device.TesterTime" class="form-control" />
                         <ValidationMessage For="@(() => Device.TesterTime)" />
+                    </div>
+                </div>
+                <div class="form-group row p-1">
+                    <div class="col-4">
+                        <label for="TesterTime">Tester Time OnParts</label>
+                    </div>
+                    <div class="col-8">
+                        <InputNumber @bind-Value="Device.TesterTime2" class="form-control" />
+                        <ValidationMessage For="@(() => Device.TesterTime2)" />
                     </div>
                 </div>
                 <div class="form-group row p-1">
@@ -354,7 +363,7 @@
 (double)template.Dissassembly_time / 60 * (double)template.Disasembler_time_price,//4-disasembler
              };
         job = new[] {
-(double)Device.TesterTime / 60 * (double)template.Tester_time_price2,       // 0 -tester
+(double)Device.TesterTime2 / 60 * (double)template.Tester_time_price2,       // 0 -tester
 (double)template.Receiver_time2 / 60 * (double)template.Receiver_time_price2,  // 1-reciever
 (double)template.Lister_time2 / 60 * (double)template.Lister_time_price2,      // 2-lister
 (double)template.Fullfilment_time2 / 60 * (double)template.Fullfilment_time_price2, //3-fullfilment
@@ -404,22 +413,22 @@
     private void GetRezult()
     {
 
-        if (B33 > 0 && G33 < 0)
+        if (B33 > template.ByOnEconomics && G33 < template.ByOnEconomics)
         {
             Device.Сonclusion = Сonclusions.ForOnHold;
             Conclusion = "OnHold";
         }
-        else if (B33 < 0 && G33 > 0)
+        else if (B33 < template.ByOnEconomics && G33 > template.ByOnEconomics)
         {
             Device.Сonclusion = Сonclusions.ForOnHold;
             Conclusion = "OnParts";
         }
-        else if (B33 < 0 && G33 < 0)
+        else if (B33 < template.ByOnEconomics && G33 < template.ByOnEconomics)
         {
             Device.Сonclusion = Сonclusions.BuyOnEconomics;
             Conclusion = "Buy On Economics";
         }
-        else if (BG > -10 && BG < 10)
+        else if (BG > -10 && BG < 10)   // по модулю "persetnage result"
         {
             Device.Сonclusion = Сonclusions.For5050;
             Conclusion = "50 / 50";
@@ -429,10 +438,10 @@
             Device.Сonclusion = Сonclusions.ForParts;
             Conclusion = "OnParts";
         }
-        else if (B33 > G33)
+        else if (B33 < G33)
         {
             Device.Сonclusion = Сonclusions.ForOnHold;
-            Conclusion = "ForOnHold";
+            Conclusion = "OnHold";
         } else
         {
             Device.Сonclusion = null;

@@ -46,6 +46,9 @@ namespace AnalyzorBlazor.Models
         [Display(Name = "Tester Time (min)")]
         [Range(1, int.MaxValue)]
         public int? TesterTime { get; set; }
+        [Display(Name = "Tester Time OnParts")]
+        [Range(1, int.MaxValue)]
+        public int? TesterTime2 { get; set; }
 
         [Display(Name = "Hold unit, $")]        
         public float? HoldUnit { get; set; }

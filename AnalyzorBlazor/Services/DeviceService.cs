@@ -118,6 +118,7 @@ namespace AnalyzorBlazor.Services
                 Template template = _db.Template.FirstOrDefault (u=>u.Name==device.Template);
                 if (device.TotalCount == null) device.TotalCount = 1;
                 if (device.TesterTime == null) device.TesterTime = template.Tester_time;
+                if (device.TesterTime2 == null) device.TesterTime2 = template.Tester_time2;
                 if (device.Analyzer_time == null) device.TesterTime = template.Analyzer_time;
                 device.CreateT = DateTime.Now;
                 _db.Device.Add(device);
